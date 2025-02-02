@@ -11,6 +11,7 @@ environ.Env.read_env()  # Reads the .env file for environment variables
 # SECRET_KEY and Debugging settings
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG', default=False)
+API_KEY = env('API_KEY')
 ALLOWED_HOSTS = []
 
 
