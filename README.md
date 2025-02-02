@@ -14,7 +14,7 @@ Kalaforge is a web application that leverages AI to generate tailored resumes an
 
 ## **Tech Stack**
 - **Backend**: Django (Handles form submissions, API calls, PDF generation).
-- **Frontend**: Django Templates, HTML, CSS, JavaScript.
+- **Frontend**: Django Templates (HTML, CSS, JavaScript).
 - **AI**: OpenAI API (gpt-3.5-turbo for affordability).
 - **Database**: PostgreSQL / SQLite (Stores user-generated resumes).
 - **Extras**: Docker for development efficeincy.
