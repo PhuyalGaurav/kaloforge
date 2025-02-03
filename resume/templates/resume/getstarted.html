@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaloforge</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'resume/style.css' %}">
+</head>
+<body>
+    <div class="hero">
+        <div class="overlay"></div>
+        <div class="content">
+            <h1>Welcome to Kaloforge</h1>
+            <p>Take the first step towards Kalo's Resume</p>
+            <a href="{% url 'home' %}" class="btn">Get Started</a>
+        </div>
+    </div>
+</body>
+</html>
