@@ -1,8 +1,8 @@
-# Kalaforge
+# Kaloforge
 **AI-Powered Resume & Cover Letter Generator**
 
 **Project Overview**
-Kalaforge is a web application that leverages AI to generate tailored resumes and cover letters based on user-provided job details. Utilizing the OpenAI API, this project aims to provide job seekers with personalized documents to enhance their job application process.
+Kaloforge is a web application that leverages AI to generate tailored resumes and cover letters based on user-provided job details. Utilizing the OpenAI API, this project aims to provide job seekers with personalized documents to enhance their job application process.
 
 
 
