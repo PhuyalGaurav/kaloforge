@@ -15,6 +15,7 @@ API_KEY = env('API_KEY')
 ALLOWED_HOSTS = []
 
 
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'resume'
 ]
 
 MIDDLEWARE = [
