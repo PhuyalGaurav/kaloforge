@@ -1,33 +1,12 @@
 from openai import OpenAI
 from django.conf import settings
-
-settings.configure()
+from .generator import generate_pdf_template_1
 
 API_KEY = settings.OPENAI_API_KEY
 # API_KEY = "asd"
 client = OpenAI(
     api_key=API_KEY,
 )
-
-
-def generate_text(details, resume_format):
-    prompt = f"{details} please only keep it my details no false information, But make me look like the best pick among others and use professional language. dont give me things that i have not said so PLEASE USE NONE IF YOU DON'T HAVE ANY INFO)"
-    system_content = f"You are a helpful assistant who makes resumes for only the best people. Only use the provided information and do not generate any false information. You only reply in terms of python dictionary with key value pairs where keys are in small case in the format: {resume_format} (!! IMPORTANT !! ONLY A FORMAT DON'T USE ANY OF THIS INFORMATION DON'T EVER STRAY FROM THE FORMAT (You can add more school, education, work history or less depending on the details if none give empty but don't use the template or imaginary info don't return the format itself) & NO FALSE INFO PLEASE USE NONE IF YOU DON'T HAVE ANY INFO)"
-
-    try:
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": system_content},
-                {"role": "user", "content": prompt},
-            ],
-            max_tokens=1500,
-        )
-        return response.choices[0].message.content.strip()
-    except Exception as e:
-        print(f"Error generating text: {e}")
-        return None
-
 
 formats = [
     {
@@ -85,10 +64,21 @@ formats = [
     }
 ]
 
-# # Example Usage
 
-# print(
-#     generate_text(
-#         "Name: Gaurav Phuyal, No Experience, No projects, Avm school 2025", formats[0]
-#     )
-# )
+def generate_data(details, resume_format=formats[0]):
+    prompt = f"{details} please only keep it my details no false information, But make me look like the best pick among others and use professional language. dont give me things that i have not said so PLEASE USE NONE IF YOU DON'T HAVE ANY INFO)"
+    system_content = f"You are a helpful assistant who makes resumes for only the best people. Only use the provided information and do not generate any false information. You only reply in terms of json with key value pairs where keys are in small case in the format: {resume_format} (!! IMPORTANT !! ONLY A FORMAT DON'T USE ANY OF THIS INFORMATION DON'T EVER STRAY FROM THE FORMAT (You can add more school, education, work history or less depending on the details if none give empty but don't use the template or imaginary info don't return the format itself) & NO FALSE INFO PLEASE USE NONE IF YOU DON'T HAVE ANY INFO)"
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system_content},
+                {"role": "user", "content": prompt},
+            ],
+            max_tokens=1500,
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"Error generating text: {e}")
+        return None
