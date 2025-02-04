@@ -1,0 +1,51 @@
+{% extends "resume/layout.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-dark text-white text-center">
+                    <h3>Sign Up</h3>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        <div class="alert alert-danger">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" id="id_username" value="{{ form.username.value }}">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" id="id_email" value="{{ form.email.value }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password" class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" id="id_password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_confirmation" class="form-label">Confirm Password</label>
+                            <input type="password" name="confirmation" class="form-control" id="id_confirmation">
+                        </div>
+                        <button type="submit" class="btn btn-secondary w-100">Sign Up</button>
+                    </form>
+
+                    <div class="mt-3 text-center">
+                        <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
