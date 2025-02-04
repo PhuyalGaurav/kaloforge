@@ -1,18 +1,14 @@
-FROM python:3.12-slim
-
-RUN apt-get update && apt-get install -y \
-    libpango-1.0-0 \
-    libharfbuzz-dev \
-    libpangoft2-1.0-0 \
-    libcairo2-dev \
-    libgdk-pixbuf2.0-0 \
-    libffi-dev \
-    shared-mime-info
-
+FROM python:3.12 AS builder
 WORKDIR /app
 
-COPY . /app/
+COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
