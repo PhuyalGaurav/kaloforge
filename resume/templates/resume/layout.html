@@ -16,7 +16,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">Kaloforge</a>
+            <a class="navbar-brand" href="{% url 'home' %}">Kaloforge</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -24,24 +24,24 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                        <a class="btn nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="#">About</a>
+                        <a class="btn nav-link {% if request.path == '/about/' %}active{% endif %}" href="#">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="#">Contact</a>
+                        <a class="btn nav-link {% if request.path == '/contact/' %}active{% endif %}" href="#">Contact</a>
                     </li>
                 </ul>
 
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="btn nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ user.username }}
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                            <ul class="btn dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="np dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                             </ul>
                         </li>
                     {% endif %}
@@ -59,11 +59,11 @@
         <div class="login-box">
             <h2>Welcome to Kaloforge</h2>
             <p class="mb-4">Make your resume today!</p>
-            <p class="text-center mb-4">Already have an account? Log in and continue</p>
+            <p class="text-center mb-4">New to Kaloforge? Create an account to get started</p>
             <a href="{% url 'signup' %}" class="btn btn-secondary btn-lg w-100 mb-2">
                  Sign up
             </a>
-            <p class="text-center mb-4 ">New to Kaloforge? Create an account to get started</p>
+            <p class="text-center mb-4 ">Already have an account? Log in and continue</p>
             <a href="{% url 'login' %}" class="btn btn-primary btn-lg w-100">
                 Log in 
             </a>
