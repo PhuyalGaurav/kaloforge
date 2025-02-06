@@ -18,7 +18,24 @@
     text-align: center;
     color: white;
 }
+.hero .btng{
+    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: 0.3s ease;
+    animation: fadeIn 2.5s ease-in-out;
+}
 
+.hero .btng:hover {
+    transform: scale(1.1)!important;
+    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+
+}
 .overlay {
     position: absolute;
     top: 0;
@@ -33,38 +50,29 @@
     position: relative;
     z-index: 1;
     max-width: 600px;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 .content h1 {
     font-size: 3rem;
     font-weight: 700;
-    animation: fadeIn 1.5s ease-in-out;
+    
 }
-
-.content p {
-    font-size: 1.2rem;
-    margin-top: 10px;
-    animation: fadeIn 2s ease-in-out;
-}
-
-/* Button */
 .btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 30px;
-    font-size: 1.2rem;
-    color: white;
-    text-decoration: none;
-    background: linear-gradient(45deg, #ff416c, #ff4b2b);
-    border-radius: 50px;
-    transition: 0.3s ease;
-    animation: fadeIn 2.5s ease-in-out;
+    padding: 12px 30px !important;
+    margin-right: 15px !important;
+    font-size: 1.2rem !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 50px !important;
+    transition: 0.3s ease !important;
 }
 
 .btn:hover {
-    transform: scale(1.1);
-    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    transform: scale(1.1) !important;
+    background: linear-gradient(45deg, #ff4b2b, #ff416c) !important;
 }
+
 
 /* Animations */
 @keyframes fadeIn {
@@ -82,10 +90,6 @@ body {
     color: #333;
 }
 
-footer {
-    background-color: #333;
-    color: #fff;
-}
 
 /* Navbar Customization */
 .navbar-brand {
@@ -145,29 +149,9 @@ footer {
     transition: all 0.3s ease-in-out;
 }
 
-.login-box .btn-primary {
-    background: linear-gradient(45deg, #007bff, #00d4ff);
-    border: none;
-    color: white;
-}
 
-.login-box .btn-primary:hover {
-    background: linear-gradient(45deg, #0056b3, #008cff);
-    transform: scale(1.05);
-}
-
-.login-box .btn-secondary {
-    background: linear-gradient(45deg, #ff6b6b, #ff4757);
-    border: none;
-    color: white;
-}
-
-.login-box .btn-secondary:hover {
-    background: linear-gradient(45deg, #ff4b2b, #ff416c);
-    transform: scale(1.05);
-}
 .blur-background {
-    filter: blur(4px); /* Less blur */
+    filter: blur(4px); 
     pointer-events: none;
 }
 .btn-primary {
@@ -177,7 +161,7 @@ footer {
 }
 
 .btn-primary:hover {
-    background: linear-gradient(45deg, #0056b3, #008cff);
+    background: linear-gradient(45deg, #0056b3, #008cff)!important;
     transform: scale(1.05);
 }
 .btn-secondary {
@@ -189,4 +173,16 @@ footer {
 .btn-secondary:hover {
     background: linear-gradient(45deg, #ff4b2b, #ff416c);
     transform: scale(1.05);
+}
+.np:hover{
+    background: #ff4b2b;
+}
+/* Navbar Shrink Effect */
+.navbar {
+    transition: all 0.3s ease;  
+    padding: 0px 0;  
+}
+
+.navbar:hover {
+    padding: 15px 0;  
 }

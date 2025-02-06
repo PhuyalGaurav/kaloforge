@@ -74,7 +74,7 @@ def signup(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("home"))
     return render(request, "resume/home.html")
 
 
