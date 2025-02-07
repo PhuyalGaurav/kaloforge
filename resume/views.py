@@ -85,4 +85,17 @@ def generate_resume(request):
     )
 
     generate_pdf_template_1(json.loads(data))
-    return render(request, "resume/home.html")
+    return render(request, "generator/template1.html")
+    
+#ARU chaine inputfield paxi add garamla 
+
+def form(request):
+    if request.method == "POST":
+        data = generate_data(
+            f"Name: {request.POST['name']}, Email: {request.POST['email']}, {request.POST['description']}"
+        )
+
+        generate_pdf_template_1(json.loads(data))
+        return render(request, "generator/template1.html")
+    else:
+        return render(request, "resume/form.html")
