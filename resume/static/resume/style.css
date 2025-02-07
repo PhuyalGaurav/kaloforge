@@ -1,4 +1,4 @@
-/* Import Google Fonts */
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
 
 * {
@@ -8,7 +8,6 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* Background Image & Overlay */
 .hero {
     height: 100vh;
     position: relative;
@@ -45,7 +44,6 @@
     background: rgba(0, 0, 0, 0.95);
 }
 
-/* Content */
 .content {
     position: relative;
     z-index: 1;
@@ -73,8 +71,6 @@
     background: linear-gradient(45deg, #ff4b2b, #ff416c) !important;
 }
 
-
-/* Animations */
 @keyframes fadeIn {
     0% { opacity: 0; transform: translateY(-20px); }
     100% { opacity: 1; transform: translateY(0); }
@@ -83,7 +79,7 @@
     from { transform: translateY(-20px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
-/* Global Styles */
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f7f7f7;
@@ -91,7 +87,6 @@ body {
 }
 
 
-/* Navbar Customization */
 .navbar-brand {
     font-weight: bold;
 }
@@ -106,7 +101,6 @@ body {
     color: white;
 }
 
-/* Main Content Padding */
 .container {
     padding-top: 30px;
     padding-bottom: 30px;
@@ -117,16 +111,15 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Reduced blur intensity */
+    background: rgba(0, 0, 0, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(8px); /* Lighter blur */
+    backdrop-filter: blur(8px); 
     animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Glassmorphism login box */
 .login-box {
     background: rgba(255, 255, 255, 0.1);
     padding: 2.5rem;
@@ -140,7 +133,6 @@ body {
     animation: slideDown 0.5s ease-in-out;
 }
 
-/* Modern Buttons */
 .login-box .btn {
     font-size: 1.2rem;
     font-weight: bold;
@@ -177,7 +169,6 @@ body {
 .np:hover{
     background: #ff4b2b;
 }
-/* Navbar Shrink Effect */
 .navbar {
     transition: all 0.3s ease;  
     padding: 0px 0;  
@@ -185,4 +176,74 @@ body {
 
 .navbar:hover {
     padding: 15px 0;  
+}
+.form-container .form-overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5)!important; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px); 
+}
+
+.form-container .form-box{
+    background: rgba(0, 0, 0, 0.8) !important;
+    padding: 2rem 3rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2)!important;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3)!important;
+    color: white;
+    animation: formSlideDown 0.5s ease-in-out; 
+}
+.form-container .form-group:hover{
+    transform: scale(1.05);
+}
+.form-container .form-box h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #fff;
+}
+
+.form-container .form-group button {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 30px;
+    background: linear-gradient(45deg, #007bff, #00d4ff);
+    border: none;
+    color: white;
+    transition: 0.3s ease;
+}
+
+.form-container .form-group button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(45deg, #0056b3, #008cff);
+}
+
+@keyframes formSlideDown {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@media screen and (max-width: 768px) {
+.form-container .form-box {
+    padding: 1.5rem;
+    width: 90%;
+}
+
+.form-container .form-box h2 {
+    font-size: 1.5rem;
+}
+
+.form-container .form-group input, .form-container .form-group button {
+    font-size: 1rem;
+}
 }
