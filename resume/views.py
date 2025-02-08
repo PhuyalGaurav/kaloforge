@@ -21,12 +21,20 @@ def home(request):
 
 def login_view(request):
     if request.method == "POST":
+        
         username = request.POST["username"]
         password = request.POST["password"]
         
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
+            remember_me=request.POST.get("rememberMe", None)
+
+            if remember_me is not None:
+                request.session.set_expiry(15552000)  
+            else:
+                request.session.set_expiry(0) 
+
             login(request, user)
             return HttpResponseRedirect(reverse("home"))  
         else:
@@ -41,6 +49,7 @@ def signup(request):
         email = request.POST["email"]
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+        remember_me = request.POST.get("rememberMe", None)
 
         if password != confirmation:
             messages.error(request, "Passwords must match.")
@@ -64,6 +73,11 @@ def signup(request):
             user = User.objects.create_user(username=username, email=email, password=password)
             user.save()
             login(request, user)  
+            if remember_me is not None:
+                request.session.set_expiry(15552000)  
+            else:
+                request.session.set_expiry(0)  
+
             return HttpResponseRedirect(reverse("home"))
         except IntegrityError:
             messages.error(request, "An error occurred. Please try again.")
@@ -75,7 +89,6 @@ def signup(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("home"))
-    return render(request, "resume/home.html")
 
 
 # Testing purposes ko lagi matrai ho hai yo error ayo bhane comment garde yo function
@@ -87,12 +100,12 @@ def generate_resume(request):
     generate_pdf_template_1(json.loads(data))
     return render(request, "generator/template1.html")
     
-#ARU chaine inputfield paxi add garamla 
+#Yo Yo Yo 1-4-8 3 to the 3 to the 6 to the 9. Representing the ABQ. What up BIATCH! Leave at the tone. 
 
 def form(request):
     if request.method == "POST":
         data = generate_data(
-            f"Name: {request.POST['name']}, Email: {request.POST['email']}, {request.POST['description']}"
+            f"Name: {request.POST['name']}, Email: {request.POST['email']}, Skills: {request.POST['skills']}"
         )
 
         generate_pdf_template_1(json.loads(data))
