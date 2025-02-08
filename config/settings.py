@@ -97,3 +97,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'resume.User'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"  
+SESSION_COOKIE_AGE = 15552000  
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  
+
+

@@ -5,11 +5,11 @@
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="col-lg-8 col-md-10 col-sm-12">
             <div class="form-overlay form-container">
-                <!--aru input field paxi add hanamla -->
-                <form action="#" method="POST" class="form-box p-4">
+                <form action="{% url 'form' %}" method="POST" class="form-box p-4">
                     <h2>Create Your Resume</h2>
+
                     <div class="form-group mb-3">
                         <label for="name">Full Name</label>
                         <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
@@ -20,10 +20,117 @@
                         <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
                     </div>
 
-            
+                    <div class="form-group mb-3">
+                        <label for="professional_summary">Professional Summary</label>
+                        <textarea id="professional_summary" name="professional_summary" class="form-control" placeholder="Write a short summary about yourself" required></textarea>
+                    </div>
+
                     <div class="form-group mb-3">
                         <label for="skills">Skills</label>
-                        <textarea id="skills" name="skills" class="form-control" placeholder="Enter your skills" required></textarea>
+                        <textarea id="skills" name="skills" class="form-control" placeholder="Enter your skills, separated by commas" required></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="photo">Upload Photo</label>
+                        <input type="file" id="photo" name="photo" class="form-control" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="job_title_1">Job Title 1</label>
+                        <input type="text" id="job_title_1" name="work_history[0][job_title]" class="form-control" placeholder="Enter job title" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="company_name_1">Company Name 1</label>
+                        <input type="text" id="company_name_1" name="work_history[0][company_name]" class="form-control" placeholder="Enter company name" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="time_employed_1">Time Employed 1</label>
+                        <input type="text" id="time_employed_1" name="work_history[0][time_employed]" class="form-control" placeholder="Enter time period" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="responsibilities_1">Responsibilities 1</label>
+                        <textarea id="responsibilities_1" name="work_history[0][responsibilities]" class="form-control" placeholder="Enter responsibilities, separated by commas" required></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="job_title_2">Job Title 2</label>
+                        <input type="text" id="job_title_2" name="work_history[1][job_title]" class="form-control" placeholder="Enter job title">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="company_name_2">Company Name 2</label>
+                        <input type="text" id="company_name_2" name="work_history[1][company_name]" class="form-control" placeholder="Enter company name">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="time_employed_2">Time Employed 2</label>
+                        <input type="text" id="time_employed_2" name="work_history[1][time_employed]" class="form-control" placeholder="Enter time period">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="responsibilities_2">Responsibilities 2</label>
+                        <textarea id="responsibilities_2" name="work_history[1][responsibilities]" class="form-control" placeholder="Enter responsibilities, separated by commas"></textarea>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="school_name_1">School Name 1</label>
+                        <input type="text" id="school_name_1" name="education[0][school_name]" class="form-control" placeholder="Enter school name" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="degree_1">Degree 1</label>
+                        <input type="text" id="degree_1" name="education[0][degree]" class="form-control" placeholder="Enter degree">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="time_period_1">Time Period 1</label>
+                        <input type="text" id="time_period_1" name="education[0][time_period]" class="form-control" placeholder="Enter time period">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="school_name_2">School Name 2</label>
+                        <input type="text" id="school_name_2" name="education[1][school_name]" class="form-control" placeholder="Enter school name">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="degree_2">Degree 2</label>
+                        <input type="text" id="degree_2" name="education[1][degree]" class="form-control" placeholder="Enter degree">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="time_period_2">Time Period 2</label>
+                        <input type="text" id="time_period_2" name="education[1][time_period]" class="form-control" placeholder="Enter time period">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="project_name_1">Project Name 1</label>
+                        <input type="text" id="project_name_1" name="projects[0][project_name]" class="form-control" placeholder="Enter project name" required>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="description_1">Project Description 1</label>
+                        <textarea id="description_1" name="projects[0][description]" class="form-control" placeholder="Enter project description" required></textarea>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="technologies_1">Technologies Used 1</label>
+                        <textarea id="technologies_1" name="projects[0][technologies]" class="form-control" placeholder="Enter technologies used, separated by commas" required></textarea>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="project_name_2">Project Name 2</label>
+                        <input type="text" id="project_name_2" name="projects[1][project_name]" class="form-control" placeholder="Enter project name">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="description_2">Project Description 2</label>
+                        <textarea id="description_2" name="projects[1][description]" class="form-control" placeholder="Enter project description"></textarea>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="technologies_2">Technologies Used 2</label>
+                        <textarea id="technologies_2" name="projects[1][technologies]" class="form-control" placeholder="Enter technologies used, separated by commas"></textarea>
                     </div>
 
                     <div class="form-group">
@@ -34,5 +141,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}
