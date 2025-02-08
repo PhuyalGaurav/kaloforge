@@ -1,5 +1,6 @@
 import environ
 from pathlib import Path
+import os
 
 # Base directory path
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,17 +15,32 @@ DEBUG = env("DEBUG", default=False)
 OPENAI_API_KEY = env("API_KEY")
 ALLOWED_HOSTS = []
 
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = "kaloforge"
+AWS_S3_REGION_NAME = "ap-south-1"
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+AWS_DEFAULT_ACL = "public-read"
+AWS_QUERYSTRING_AUTH = False
 
+
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'resume'
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "resume",
 ]
 
 MIDDLEWARE = [
@@ -90,10 +106,9 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model
-AUTH_USER_MODEL = 'resume.User'
+AUTH_USER_MODEL = "resume.User"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
