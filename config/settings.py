@@ -20,9 +20,9 @@ AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = "kaloforge"
 AWS_S3_REGION_NAME = "ap-south-1"
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-AWS_DEFAULT_ACL = "public-read"
-AWS_QUERYSTRING_AUTH = False
-
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_S3_ADDRESSING_STYLE = "virtual"
+AWS_S3_FILE_OVERWRITE = False
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -113,8 +113,6 @@ AUTH_USER_MODEL = "resume.User"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-SESSION_ENGINE = "django.contrib.sessions.backends.db"  
-SESSION_COOKIE_AGE = 15552000  
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False  
-
-
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
+SESSION_COOKIE_AGE = 15552000
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False

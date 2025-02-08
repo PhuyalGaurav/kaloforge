@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from .models import User
-from .utils import generate_data, generate_pdf_template_1
+from .utils import generate_data, generate_html_template_1, generate_pdf_from_html
 import json
 
 
@@ -17,31 +17,33 @@ def index(request):
 
 
 def home(request):
-    return render(request, 'resume/home.html')
+    return render(request, "resume/home.html")
+
 
 def login_view(request):
     if request.method == "POST":
-        
+
         username = request.POST["username"]
         password = request.POST["password"]
-        
+
         user = authenticate(request, username=username, password=password)
-        
+
         if user is not None:
-            remember_me=request.POST.get("rememberMe", None)
+            remember_me = request.POST.get("rememberMe", None)
 
             if remember_me is not None:
-                request.session.set_expiry(15552000)  
+                request.session.set_expiry(15552000)
             else:
-                request.session.set_expiry(0) 
+                request.session.set_expiry(0)
 
             login(request, user)
-            return HttpResponseRedirect(reverse("home"))  
+            return HttpResponseRedirect(reverse("home"))
         else:
             messages.error(request, "Invalid username and/or password.")
-            return render(request, "resume/login.html")  
+            return render(request, "resume/login.html")
     else:
         return render(request, "resume/login.html")
+
 
 def signup(request):
     if request.method == "POST":
@@ -54,29 +56,31 @@ def signup(request):
         if password != confirmation:
             messages.error(request, "Passwords must match.")
             return render(request, "resume/signup.html")
-        
+
         try:
             validate_email(email)
         except ValidationError:
             messages.error(request, "Invalid email address.")
             return render(request, "resume/signup.html")
-        
+
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already taken.")
             return render(request, "resume/signup.html")
-        
+
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already registered.")
             return render(request, "resume/signup.html")
 
         try:
-            user = User.objects.create_user(username=username, email=email, password=password)
+            user = User.objects.create_user(
+                username=username, email=email, password=password
+            )
             user.save()
-            login(request, user)  
+            login(request, user)
             if remember_me is not None:
-                request.session.set_expiry(15552000)  
+                request.session.set_expiry(15552000)
             else:
-                request.session.set_expiry(0)  
+                request.session.set_expiry(0)
 
             return HttpResponseRedirect(reverse("home"))
         except IntegrityError:
@@ -86,29 +90,37 @@ def signup(request):
     else:
         return render(request, "resume/signup.html")
 
+
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("home"))
 
 
 # Testing purposes ko lagi matrai ho hai yo error ayo bhane comment garde yo function
-def generate_resume(request):
-    data = generate_data(
-        "Name: Gaurav Phuyal, Email:phuyalgaurav90@gmail.com, Experienced python developer with over 30 years of experience, Skills: Python, Django, Flask, FastAPI, JavaScript, React, Angular, Vue, HTML, CSS, SQL, NoSQL, Docker, Kubernetes, AWS, Azure, GCP, Git, CI/CD, Agile, Scrum, Kanban, TDD, BDD, DDD, Microservices, REST, GraphQL, etc..."
-    )
+# def generate_resume(request):
+#     data = generate_data(
+#         "Name: Gaurav Phuyal, Email:phuyalgaurav90@gmail.com, Experienced python developer with over 30 years of experience, Skills: Python, Django, Flask, FastAPI, JavaScript, React, Angular, Vue, HTML, CSS, SQL, NoSQL, Docker, Kubernetes, AWS, Azure, GCP, Git, CI/CD, Agile, Scrum, Kanban, TDD, BDD, DDD, Microservices, REST, GraphQL, etc..."
+#     )
 
-    generate_pdf_template_1(json.loads(data))
-    return render(request, "generator/template1.html")
-    
-#Yo Yo Yo 1-4-8 3 to the 3 to the 6 to the 9. Representing the ABQ. What up BIATCH! Leave at the tone. 
+#     generate_pdf_template_1(json.loads(data))
+#     return render(request, "generator/template1.html")
+
+
+# Yo Yo Yo 1-4-8 3 to the 3 to the 6 to the 9. Representing the ABQ. What up BIATCH! Leave at the tone.
+# JESSI WTF IS THIS?? WHO TF WILL FILL A FORM THAT IS THIS BIG??
+
 
 def form(request):
     if request.method == "POST":
-        data = generate_data(
-            f"Name: {request.POST['name']}, Email: {request.POST['email']}, Skills: {request.POST['skills']}"
-        )
+        try:
+            data = generate_data(
+                f"Name: {request.POST['name']}, Email: {request.POST['email']}, Skills: {request.POST['skills']}"
+            )
+            html = generate_html_template_1(data)
+            link = generate_pdf_from_html(html)
+            return HttpResponse(link)
 
-        generate_pdf_template_1(json.loads(data))
-        return render(request, "generator/template1.html")
+        except Exception as e:
+            return HttpResponse(e)
     else:
         return render(request, "resume/form.html")

@@ -8,6 +8,7 @@
         <div class="col-lg-8 col-md-10 col-sm-12">
             <div class="form-overlay form-container">
                 <form action="{% url 'form' %}" method="POST" class="form-box p-4">
+                    {% csrf_token %}
                     <h2>Create Your Resume</h2>
 
                     <div class="form-group mb-3">
@@ -28,7 +29,7 @@
                     <div class="form-group mb-3">
                         <label for="skills">Skills</label>
                         <textarea id="skills" name="skills" class="form-control" placeholder="Enter your skills, separated by commas" required></textarea>
-                    </div>
+                    {% comment %} </div>
                     <div class="form-group mb-3">
                         <label for="photo">Upload Photo</label>
                         <input type="file" id="photo" name="photo" class="form-control" required>
@@ -131,7 +132,7 @@
                     <div class="form-group mb-3">
                         <label for="technologies_2">Technologies Used 2</label>
                         <textarea id="technologies_2" name="projects[1][technologies]" class="form-control" placeholder="Enter technologies used, separated by commas"></textarea>
-                    </div>
+                    </div> {% endcomment %}
 
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary w-100">Submit</button>
