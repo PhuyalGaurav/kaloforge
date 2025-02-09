@@ -1,11 +1,20 @@
 services:
   web:
     build: .
-    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             python manage.py migrate &&
+             gunicorn config.wsgi:application --config gunicorn.conf.py"
     volumes:
-      - .:/app  
-      - /app/static  
+      - .:/app
+      - static_volume:/app/staticfiles
     ports:
-      - "8000:8000"
+      - "8080:8080"
+    environment:
+      - DEBUG=True
+      - PORT=8080
     env_file:
-      - ./.env 
+      - ./.env
+
+volumes:
+  static_volume:

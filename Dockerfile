@@ -26,6 +26,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 COPY . .
 
+RUN mkdir -p /app/static/resume /app/staticfiles \
+    && chmod -R 755 /app/static /app/staticfiles
 RUN python manage.py collectstatic --noinput
 
 CMD exec gunicorn config.wsgi:application --config gunicorn.conf.py

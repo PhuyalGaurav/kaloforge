@@ -4,3 +4,5 @@ venv/
 **/*.py[cod]
 **/migrations/
 output.pdf
+static/
+staticfiles/
