@@ -8,21 +8,31 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
+    - name: Google Auth
+      id: auth
+      uses: google-github-actions/auth@v1
       with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-    - name: Authenticate Docker to GCR
-      run: gcloud auth configure-docker asia-south1-docker.pkg.dev
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
 
-    - name: Build Docker image
+    - name: Configure Docker authentication
+      run: |
+        gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
+
+    - name: Build and Push Docker image
+      env:
+        GCP_PROJECT: golden-bonbon-449702-p6
+        IMAGE: asia-south1-docker.pkg.dev/golden-bonbon-449702-p6/cloud-run-source-deploy/kaloforge
       run: |
         docker build \
           --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
@@ -31,10 +41,8 @@ jobs:
           --build-arg API_KEY=${{ secrets.API_KEY }} \
           --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
           --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-          -t asia-south1-docker.pkg.dev/golden-bonbon-449702-p6/cloud-run-source-deploy/kaloforge:${{ github.sha }} .
-
-    - name: Push Docker image to GCR
-      run: docker push asia-south1-docker.pkg.dev/golden-bonbon-449702-p6/cloud-run-source-deploy/kaloforge:${{ github.sha }}
+          -t ${IMAGE}:${{ github.sha }} .
+        docker push ${IMAGE}:${{ github.sha }}
 
     - name: Deploy to Cloud Run
       run: |
@@ -42,10 +50,6 @@ jobs:
           --image asia-south1-docker.pkg.dev/golden-bonbon-449702-p6/cloud-run-source-deploy/kaloforge:${{ github.sha }} \
           --platform managed \
           --region asia-south1 \
+          --project golden-bonbon-449702-p6 \
           --allow-unauthenticated \
-          --update-env-vars "DATABASE_URL=${{ secrets.DATABASE_URL }}" \
-          --update-env-vars "SECRET_KEY=${{ secrets.SECRET_KEY }}" \
-          --update-env-vars "DEBUG=${{ secrets.DEBUG }}" \
-          --update-env-vars "API_KEY=${{ secrets.API_KEY }}" \
-          --update-env-vars "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
-          --update-env-vars "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          --update-env-vars DATABASE_URL=${{ secrets.DATABASE_URL }},SECRET_KEY=${{ secrets.SECRET_KEY }},DEBUG=${{ secrets.DEBUG }},API_KEY=${{ secrets.API_KEY }},AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }},AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
