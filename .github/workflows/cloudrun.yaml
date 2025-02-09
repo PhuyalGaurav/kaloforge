@@ -49,7 +49,7 @@ jobs:
         gcloud run deploy kaloforge \
           --image asia-south1-docker.pkg.dev/golden-bonbon-449702-p6/cloud-run-source-deploy/kaloforge:${{ github.sha }} \
           --platform managed \
-          --region asia-south1 \
+          --region asia-south2 \
           --project golden-bonbon-449702-p6 \
           --allow-unauthenticated \
           --port 8080 \
