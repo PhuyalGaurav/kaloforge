@@ -1,5 +1,11 @@
 FROM python:3.12 AS builder
 
+ARG SECRET_KEY
+ARG DEBUG
+
+ENV SECRET_KEY=${SECRET_KEY}
+ENV DEBUG=${DEBUG}
+
 WORKDIR /app
 
 COPY requirements.txt .
