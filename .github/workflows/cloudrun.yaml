@@ -33,6 +33,11 @@ jobs:
         gcloud run deploy kaloforge-service \
           --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/kaloforge:${{ github.sha }} \
           --platform managed \
-          --region us-central1 \
+          --region asia-south1 \
           --allow-unauthenticated \
-          --update-env-vars "DATABASE_URL=${{ secrets.DATABASE_URL }},SECRET_KEY=${{ secrets.SECRET_KEY }}, API_KEY=${{ secrets.API_KEY }}, DEBUG=False, AWS_ACCESS_KEY_ID =${{ secrets.AWS_ACCESS_KEY_ID }}, AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY}}"
+            --update-env-vars "DATABASE_URL=${{ secrets.DATABASE_URL }}" \
+            --update-env-vars "SECRET_KEY=${{ secrets.SECRET_KEY }}" \
+            --update-env-vars "DEBUG=False" \
+            --update-env-vars "API_KEY=${{ secrets.API_KEY }}" \
+            --update-env-vars "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+            --update-env-vars "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" 
