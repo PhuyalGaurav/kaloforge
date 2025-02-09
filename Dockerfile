@@ -28,6 +28,4 @@ COPY . .
 
 RUN python manage.py collectstatic --noinput
 
-EXPOSE 8080
-
 CMD exec gunicorn config.wsgi:application --config gunicorn.conf.py
