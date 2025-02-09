@@ -13,6 +13,8 @@ ENV DATABASE_URL=${DATABASE_URL}
 ENV API_KEY=${API_KEY}
 ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
 ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
@@ -28,4 +30,4 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD exec gunicorn config.wsgi:application --config gunicorn.conf.py
