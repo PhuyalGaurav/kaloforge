@@ -15,7 +15,7 @@ DEBUG = env("DEBUG", default=False)
 OPENAI_API_KEY = env("API_KEY")
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://*.run.app", "http://localhost:8000"]
+CSRF_TRUSTED_ORIGINS = ["https://*.run.app", "http://localhost:8000", "https://*.phuyalgaurav.com.np", "http://localhost:8080"]
 AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = "kaloforge"
@@ -117,10 +117,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = "static/"
-
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model
@@ -128,6 +124,7 @@ AUTH_USER_MODEL = "resume.User"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Session settings
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_AGE = 15552000
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
