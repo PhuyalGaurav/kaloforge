@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from .models import User
+from .models import User, ResumeData
 from .utils import generate_data, generate_html_template_1, generate_pdf_from_html
 import json
 
@@ -117,11 +117,41 @@ def logout_view(request):
 def form(request):
     if request.method == "POST":
         try:
-            data = generate_data(
-                f"Name: {request.POST['name']}, Email: {request.POST['email']}, Skills: {request.POST['skills']}"
+            # Get form data and save it.
+            resume_data = ResumeData(
+                name=request.POST.get("name", ""),
+                email=request.POST.get("email", ""),
+                phone=request.POST.get("phone", ""),
+                summary=request.POST.get("summary", ""),
+                skills=request.POST.get("skills", ""),
+                education=request.POST.get("education", ""),
+                experience=request.POST.get("experience", ""),
+                projects=request.POST.get("projects", ""),
+                certifications=request.POST.get("certifications", ""),
+                languages=request.POST.get("languages", ""),
+                interests=request.POST.get("interests", ""),
             )
+            if "image" in request.FILES:
+                resume_data.image = request.FILES["image"]
+            resume_data.save()
+
+            data = generate_data(
+                f"""Name: {resume_data.name}, 
+                   Email: {resume_data.email},
+                   Phone: {resume_data.phone},
+                   Summary: {resume_data.summary},
+                   Skills: {resume_data.skills},
+                   Education: {resume_data.education},
+                   Experience: {resume_data.experience},
+                   Projects: {resume_data.projects},
+                   Certifications: {resume_data.certifications},
+                   Languages: {resume_data.languages},
+                   Interests: {resume_data.interests}"""
+            )
+
             html = generate_html_template_1(data)
             link = generate_pdf_from_html(html)
+
             return HttpResponse(link)
 
         except Exception as e:
