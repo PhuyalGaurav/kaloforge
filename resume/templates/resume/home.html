@@ -4,7 +4,6 @@
 {% block title %}Kaloforge: My Resumes{% endblock %}
 
 {% block content %}
-{% if resume %}
 <style>
     .resume-preview-container {
         width: 100%;
@@ -76,6 +75,24 @@
     </div>
 </div>
 {% else %}
-// ...existing code...
+    <div class="container d-flex align-items-center justify-content-center">
+        <div class="text-center">
+            <img src="{% static 'resume/images/empty.png' %}" 
+                 alt="No resumes yet" 
+                 class="empty-state-img"
+                 width="250" 
+                 height="250">
+            <h1 class="display-4 fw-bold mb-4">No Creations Yet</h1>
+            <p class="lead mb-4 text-muted">
+                You haven't created anything yet. 
+                <br>Your creations will appear here.
+            </p>
+            <div class="d-grid col-md-8 mx-auto">
+                <a href="{% url 'form' %}" class="btn btn-primary btn-lg shadow-sm px-5 py-3">
+                    <i class="bi bi-plus-circle me-2"></i>Create Resume
+                </a>
+            </div>
+        </div>
+    </div>
 {% endif %}
 {% endblock %}

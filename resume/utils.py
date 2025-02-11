@@ -133,7 +133,7 @@ def generate_pdf_from_html(html_content, filename=None):
             url = s3_client.generate_presigned_url(
                 "get_object",
                 Params={"Bucket": settings.AWS_STORAGE_BUCKET_NAME, "Key": s3_key},
-                ExpiresIn=3600,  # URL expires in 1 hour
+                ExpiresIn=3600000000,
             )
 
             return url
