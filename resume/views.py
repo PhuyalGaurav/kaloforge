@@ -7,21 +7,27 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from .models import User, ResumeData
+from .models import User, ResumeData, Resume
 from .utils import generate_data, generate_html_template_1, generate_pdf_from_html
 import json
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
     return render(request, "resume/getstarted.html")
 
 
+@login_required(login_url="/login")
 def resume(request):
     return render(request, "resume/resume.html")
 
 
 def home(request):
-    return render(request, "resume/home.html")
+    if request.user.is_authenticated:
+        resumes = Resume.objects.filter(user=request.user)
+        return render(request, "resume/home.html", {"resume": resumes})
+    else:
+        return render(request, "resume/home.html")
 
 
 def login_view(request):
@@ -114,6 +120,7 @@ def logout_view(request):
 # JESSI WTF IS THIS?? WHO TF WILL FILL A FORM THAT IS THIS BIG??
 
 
+@login_required(login_url="/login")
 def form(request):
     if request.method == "POST":
         try:
@@ -152,6 +159,14 @@ def form(request):
             html = generate_html_template_1(data)
             link = generate_pdf_from_html(html)
 
+            resume = Resume(
+                user=request.user,
+                data=resume_data,
+                template_used="template1",
+                html_template=html,
+                pdf_link=link,
+            )
+            resume.save()
             return HttpResponse(link)
 
         except Exception as e:

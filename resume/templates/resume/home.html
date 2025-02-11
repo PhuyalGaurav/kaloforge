@@ -4,23 +4,78 @@
 {% block title %}Kaloforge: My Resumes{% endblock %}
 
 {% block content %}
-<div class="container d-flex align-items-center justify-content-center">
-    <div class="text-center">
-        <img src="{% static 'resume/images/empty.png' %}" 
-             alt="No resumes yet" 
-             class="empty-state-img"
-             width="250" 
-             height="250">
-        <h1 class="display-4 fw-bold mb-4">No Creations Yet</h1>
-        <p class="lead mb-4 text-muted">
-            You haven't created anything yet. 
-            <br>Your creations will appear here.
-        </p>
-        <div class="d-grid col-md-8 mx-auto">
-            <a href="{% url 'form' %}" class="btn btn-primary btn-lg shadow-sm px-5 py-3">
-                <i class="bi bi-plus-circle me-2"></i>Create Resume
-            </a>
+{% if resume %}
+<style>
+    .resume-preview-container {
+        width: 100%;
+        height: 0;
+        padding-bottom: 141.42%; /* A4 aspect ratio */
+        position: relative;
+        background: white;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+    
+    .resume-preview {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .resume-preview > * {
+        transform: scale(0.18);
+        transform-origin: top left;
+        width: 555.55%; /* 100/0.18 to compensate for scale */
+        height: 555.55%;
+        position: absolute;
+        background: white;
+        pointer-events: none;
+    }
+    
+    .card {
+        transition: all 0.3s ease;
+        min-height: 500px;
+    }
+    
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+</style>
+
+<div class="container-fluid py-5">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for r in resume %}
+        <div class="col">
+            <div class="card h-100 shadow-sm hover-shadow">
+                <div class="card-body">
+                    <div class="resume-preview-container">
+                        <div class="resume-preview">
+                            {{ r.html_template|safe }}
+                        </div>
+                    </div>
+                    <h5 class="card-title text-truncate mb-3">{{ r.data.name }}</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ r.pdf_link }}" class="btn btn-primary" target="_blank">
+                            <i class="bi bi-file-pdf me-2"></i>View PDF
+                        </a>
+                        <small class="text-muted">{{ r.created_at|date:"M d, Y" }}</small>
+                    </div>
+                </div>
+            </div>
         </div>
+        {% endfor %}
     </div>
 </div>
+{% else %}
+// ...existing code...
+{% endif %}
 {% endblock %}

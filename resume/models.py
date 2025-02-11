@@ -31,8 +31,8 @@ class Resume(models.Model):
     data = models.OneToOneField(ResumeData, on_delete=models.CASCADE)
     template_used = models.CharField(max_length=100)
     html_template = models.TextField()
-    pdf_link = models.URLField(max_length=200)
+    pdf_link = models.URLField(max_length=400)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.pdf}"
+        return f"{self.user.username} - {self.data.name}- {self.created_at}"
