@@ -24,13 +24,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="btn nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                        <a class="btn nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}" style="color: white;">Home</a>
+                    </li>
+                    <li class="nav-item" style="">
+                        <a class="btn nav-link {% if request.path == '/resume/' %}active{% endif %}" href="{% url "resume" %}" style="color: white;">Resume</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn nav-link {% if request.path == '/about/' %}active{% endif %}" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn nav-link {% if request.path == '/contact/' %}active{% endif %}" href="#">Contact</a>
+                        <li class="nav-item">
+                            <span class="btn nav-link text-muted" style="cursor: default; pointer-events: none;">
+                                Coming soon!
+                            </span>
+                        </li>
                     </li>
                 </ul>
 

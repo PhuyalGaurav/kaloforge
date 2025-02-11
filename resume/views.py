@@ -16,6 +16,10 @@ def index(request):
     return render(request, "resume/getstarted.html")
 
 
+def resume(request):
+    return render(request, "resume/resume.html")
+
+
 def home(request):
     return render(request, "resume/home.html")
 

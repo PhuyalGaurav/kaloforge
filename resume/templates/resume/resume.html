@@ -1,23 +1,22 @@
 {% extends 'resume/layout.html' %}
 {% load static %}
-
-{% block title %}Kaloforge: My Resumes{% endblock %}
+{% block title %}Kaloforge: Resume{% endblock %}
 
 {% block content %}
 <div class="container d-flex align-items-center justify-content-center">
     <div class="text-center">
-        <img src="{% static 'resume/images/empty.png' %}" 
+        <img src="{% static 'resume/images/resume.png' %}" 
              alt="No resumes yet" 
              class="empty-state-img"
              width="250" 
              height="250">
-        <h1 class="display-4 fw-bold mb-4">No Creations Yet</h1>
+        <h1 class="display-4 fw-bold mb-4">Create Your Professional Resume</h1>
         <p class="lead mb-4 text-muted">
-            You haven't created anything yet. 
-            <br>Your creations will appear here.
+            Craft a stunning resume in minutes with our AI-powered resume builder. 
+            <br>Simple, smart, and professional.
         </p>
         <div class="d-grid col-md-8 mx-auto">
-            <a href="{% url 'form' %}" class="btn btn-primary btn-lg shadow-sm px-5 py-3">
+            <a href="{% url 'form' %}" class="btn btn-primary btn-lg shadow-sm">
                 <i class="bi bi-plus-circle me-2"></i>Create Resume
             </a>
         </div>
