@@ -10,7 +10,7 @@
         position: relative;
         background: white;
         border: 1px solid rgba(0,0,0,0.1);
-        border-radius: 4px;
+        border-radius: 8px;
         overflow: hidden;
         margin-bottom: 0.5rem;
     }
@@ -27,11 +27,12 @@
     
     .card {
         transition: all 0.3s ease;
+        border-radius: 12px;
     }
     
     .hover-shadow:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+        transform: translateY(-3px);
+        box-shadow: 0 1rem 1.5rem rgba(0,0,0,0.15) !important;
     }
 
     .card-body {
@@ -64,7 +65,7 @@
         font-size: 0.9rem;
         padding: 0.5rem 1.5rem;
         border: 2px solid white;
-        border-radius: 4px;
+        border-radius: 8px;
         transition: all 0.3s ease;
     }
 
@@ -75,7 +76,7 @@
     }
 
     .dropdown-menu {
-        min-width: 200px;
+        min-width: 100%;
         border: 0;
         box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
         border-radius: 8px;
@@ -97,14 +98,31 @@
         padding: 0.25rem 0.5rem;
         border-radius: 1rem;
     }
+
+    @media (max-width: 576px) {
+        .resume-preview-container {
+            height: 120px;
+        }
+        .card-title {
+            font-size: 0.9rem;
+        }
+        .edit-button {
+            font-size: 0.8rem;
+            padding: 0.3rem 1rem;
+        }
+    }
+    .btn-secondary {
+    font-size: 0.8rem!important;    
+    padding: 0.25rem 0.8rem!important; 
+    border-radius: 8px!important; 
+}
 </style>
 
 {% if resume %}
     <div class="container-fluid py-4">
-        <!-- Dropdown Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="dropdown">
-                <button class="btn btn-link text-dark text-decoration-none dropdown-toggle fs-4 fw-bold p-0" 
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+            <div class="dropdown mb-3 mb-md-0">
+                <button class="btn btn-link text-dark text-decoration-none dropdown-toggle fs-5 fw-bold p-0" 
                         type="button" 
                         id="resumeDropdown" 
                         data-bs-toggle="dropdown" 
@@ -112,7 +130,7 @@
                     Your Resumes
                     <span class="resume-count-badge ms-2">{{ resume|length }}</span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="resumeDropdown">
+                <ul class="dropdown-menu w-100" aria-labelledby="resumeDropdown">
                     {% for r in resume %}
                     <li>
                         <a class="dropdown-item d-flex justify-content-between align-items-center" 
@@ -130,13 +148,12 @@
                     </li>
                 </ul>
             </div>
-            <a href="{% url 'form' %}" class="btn btn-primary">
+            <a href="{% url 'form' %}" class="btn btn-primary btn-lg shadow-sm">
                 <i class="bi bi-plus-circle me-2"></i>Generate Resume
             </a>
         </div>
 
-        <!-- Resume Grid -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             {% for r in resume %}
             <div class="col">
                 <div class="card shadow-sm hover-shadow">
@@ -154,9 +171,9 @@
                         <h6 class="card-title text-truncate mb-2">{{ r.data.name }}</h6>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">{{ r.created_at|date:"M d, Y" }}</small>
-                            <a href="{{ r.pdf_link }}" class="btn btn-sm btn-outline-primary" target="_blank">
-                                <i class="bi bi-file-pdf"></i>
-                            </a>
+                            <a href="{{ r.pdf_link }}" class="btn btn-secondary" target="_blank">
+                                view                         
+                            </a>                            
                         </div>
                     </div>
                 </div>
@@ -165,20 +182,20 @@
         </div>
     </div>
 {% else %}
-    <div class="container d-flex align-items-center justify-content-center">
+    <div class="container d-flex align-items-center justify-content-center vh-100">
         <div class="text-center">
             <img src="{% static 'resume/images/empty.png' %}" 
                  alt="No resumes yet" 
-                 class="empty-state-img"
+                 class="empty-state-img img-fluid mb-3"
                  width="250" 
                  height="250">
-            <h1 class="display-4 fw-bold mb-4">No Creations Yet</h1>
+            <h1 class="display-6 fw-bold mb-3">No Creations Yet</h1>
             <p class="lead mb-4 text-muted">
                 You haven't created anything yet. 
                 <br>Your creations will appear here.
             </p>
-            <div class="d-grid col-md-8 mx-auto">
-                <a href="{% url 'form' %}" class="btn btn-primary btn-lg shadow-sm px-5 py-3">
+            <div class="d-grid">
+                <a href="{% url 'form' %}" class="btn btn-primary btn-lg shadow-sm px-4 py-3">
                     <i class="bi bi-plus-circle me-2"></i>Create Resume
                 </a>
             </div>
