@@ -34,5 +34,11 @@ class Resume(models.Model):
     pdf_link = models.URLField(max_length=400)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def pdf_url(self):
+        if hasattr(self, "pdf") and self.pdf:
+            return self.pdf.url
+        return None
+
     def __str__(self):
         return f"{self.user.username} - {self.data.name}- {self.created_at}"

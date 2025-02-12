@@ -1,0 +1,239 @@
+{% extends 'resume/layout.html' %}
+{% load static %}
+
+{% block title %}Kaloforge: Generated Resume{% endblock %}
+
+{% block content %}
+<!-- Success Banner -->
+<div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <strong>Success!</strong>, Your resume has been generated successfully.
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- PDF Preview -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-0">
+                    <div class="pdf-preview-container">
+                        {% if pdf_url %}
+                            <iframe src="{{ pdf_url }}" class="pdf-preview"></iframe>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <p class="text-muted">PDF preview not available</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions Panel -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Resume Actions</h5>
+                    
+                    <!-- Download Button -->
+                    <a href="{{ pdf_url }}" 
+                       class="btn btn-primary w-100 mb-3" 
+                       download
+                       onclick="downloadPDF(event, '{{ pdf_url }}', '{{ resume.data.name|slugify }}')">
+                        <i class="bi bi-download me-2"></i>Download PDF
+                    </a>
+
+                    <!-- View in Browser -->
+                    <a href="{{ pdf_url }}" class="btn btn-outline-primary w-100 mb-3" target="_blank">
+                        <i class="bi bi-eye me-2"></i>View in Browser
+                    </a>
+
+                    <!-- Edit Resume -->
+                    <a href="{% url 'form' %}?resume_id={{ resume.id }}" class="btn btn-outline-secondary w-100 mb-3">
+                        <i class="bi bi-pencil me-2"></i>Edit Resume
+                    </a>
+
+                    <!-- Back to Resumes -->
+                    <a href="{% url 'resume' %}" class="btn btn-link text-muted w-100">
+                        <i class="bi bi-arrow-left me-2"></i>Back to My Resumes
+                    </a>
+                </div>
+            </div>
+
+            <!-- Resume Info -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="text-muted mb-3">Resume Details</h6>
+                    <p class="mb-2"><strong>Name:</strong> {{ resume.data.name }}</p>
+                    <p class="mb-2"><strong>Created:</strong> {{ resume.created_at|date:"F j, Y" }}</p>
+                    <p class="mb-0"><strong>Last Modified:</strong> {{ resume.updated_at|date:"F j, Y" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.pdf-preview-container {
+    width: 100%;
+    height: calc(100vh - 200px);
+    min-height: 600px;
+    background: #f8f9fa;
+    border-radius: 0.375rem;
+    overflow: hidden;
+}
+
+.pdf-preview {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@media (max-width: 991.98px) {
+    .pdf-preview-container {
+        height: 500px;
+    }
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: var(--bs-primary-dark);
+    border-color: var(--bs-primary-dark);
+}
+
+.btn-outline-primary {
+    color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-outline-secondary {
+    color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+
+.btn-outline-secondary:hover {
+    color: #fff;
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+}
+
+.btn-link {
+    color: var(--bs-gray-600);
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    color: var(--bs-gray-800);
+    text-decoration: underline;
+}
+
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+}
+
+.alert {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.bi-check-circle-fill {
+    font-size: 1.25rem;
+}
+
+.animation-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+</style>
+
+<script>
+async function downloadPDF(event, url, filename) {
+    event.preventDefault();
+    
+    try {
+        // Show loading state
+        const button = event.target.closest('a');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Downloading...';
+        button.disabled = true;
+
+        // Fetch the PDF with proper headers
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/pdf'
+            }
+        });
+
+        if (!response.ok) throw new Error('Download failed');
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        // Create download link
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `resume_${filename}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        
+        // Cleanup
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+
+        // Restore button state
+        button.innerHTML = originalText;
+        button.disabled = false;
+
+    } catch (error) {
+        console.error('Download failed:', error);
+        // Fallback to direct link
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `resume_${filename}.pdf`;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+}
+</script>
+{% endblock %}

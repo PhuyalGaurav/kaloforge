@@ -9,10 +9,10 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from .models import User, ResumeData, Resume
 from .utils import generate_data, generate_html_template_1, generate_pdf_from_html
-import json
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 
 
 def index(request):
@@ -20,33 +20,68 @@ def index(request):
 
 
 @login_required(login_url="/login")
-def resume_preview(request, resume_id):
-    resume = get_object_or_404(Resume, id=resume_id, user=request.user)
-    return JsonResponse({"html_template": resume.html_template})
+def resume_api(request, resume_id):
+    try:
+        resume = Resume.objects.get(id=resume_id, user=request.user)
+        return JsonResponse(
+            {
+                "id": resume.id,
+                "data": {
+                    "name": resume.data.name if resume.data else "",
+                },
+                "pdf_url": resume.pdf_link,  # Use pdf_link here
+                "created_at": resume.created_at.isoformat(),
+                "updated_at": (
+                    resume.updated_at.isoformat()
+                    if hasattr(resume, "updated_at")
+                    else None
+                ),
+            }
+        )
+    except Resume.DoesNotExist:
+        return JsonResponse({"error": "Resume not found"}, status=404)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+@login_required(login_url="/login")
+def generated_view(request, resume_id):
+    try:
+        # Get resume only if it belongs to the current user
+        resume = Resume.objects.get(id=resume_id, user=request.user)
+        context = {
+            "resume": resume,
+            "pdf_url": resume.pdf_link,
+            "html_template": resume.html_template,
+        }
+        return render(request, "resume/generated.html", context)
+    except Resume.DoesNotExist:
+        messages.error(request, "Resume not found or access denied.")
+        return redirect("home")
 
 
 @login_required(login_url="/login")
 def resume(request):
-    resumes = (
-        Resume.objects.filter(user=request.user)
-        .select_related("data")
-        .order_by("-created_at")
-    )
+    # Only get resumes for the logged-in user
+    resumes = Resume.objects.filter(user=request.user).order_by("-created_at")
     active_resume = resumes.first() if resumes.exists() else None
 
     return render(
         request,
         "resume/resume.html",
-        {"resumes": resumes, "active_resume": active_resume},
+        {
+            "resumes": resumes,
+            "active_resume": active_resume,
+            "debug": settings.DEBUG,
+        },
     )
 
 
 def home(request):
     if request.user.is_authenticated:
-        resumes = Resume.objects.filter(user=request.user)
+        resumes = Resume.objects.filter(user=request.user).order_by("-created_at")
         return render(request, "resume/home.html", {"resume": resumes})
-    else:
-        return render(request, "resume/home.html")
+    return render(request, "resume/home.html")
 
 
 def login_view(request):
@@ -143,7 +178,7 @@ def logout_view(request):
 def form(request):
     if request.method == "POST":
         try:
-            # Get form data and save it.
+            # Create resume data
             resume_data = ResumeData(
                 name=request.POST.get("name", ""),
                 email=request.POST.get("email", ""),
@@ -178,17 +213,19 @@ def form(request):
             html = generate_html_template_1(data)
             link = generate_pdf_from_html(html)
 
+            # Create resume and assign to current user
             resume = Resume(
-                user=request.user,
+                user=request.user,  # Ensure the resume is linked to current user
                 data=resume_data,
                 template_used="template1",
                 html_template=html,
                 pdf_link=link,
             )
             resume.save()
-            return HttpResponse(link)
 
+            return redirect("generated", resume_id=resume.id)
         except Exception as e:
-            return HttpResponse(e)
-    else:
-        return render(request, "resume/form.html")
+            messages.error(request, f"Error creating resume: {str(e)}")
+            return render(request, "resume/form.html")
+
+    return render(request, "resume/form.html")
