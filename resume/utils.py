@@ -4,6 +4,7 @@ import json
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 import boto3
+from botocore.exceptions import ClientError
 from io import BytesIO
 import uuid
 
@@ -119,26 +120,20 @@ def generate_pdf_from_html(html_content, filename=None):
         )
 
         try:
-            # Upload with specific configuration
+            # Upload without ACL
             s3_client.put_object(
                 Bucket=settings.AWS_STORAGE_BUCKET_NAME,
                 Key=s3_key,
                 Body=pdf_data,
                 ContentType="application/pdf",
-                ServerSideEncryption="AES256",  # Enable server-side encryption
                 ContentDisposition=f'inline; filename="{filename}"',
             )
 
-            # Generate pre-signed URL for temporary access
-            url = s3_client.generate_presigned_url(
-                "get_object",
-                Params={"Bucket": settings.AWS_STORAGE_BUCKET_NAME, "Key": s3_key},
-                ExpiresIn=3600000000,
-            )
-
+            # Generate permanent URL
+            url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{s3_key}"
             return url
 
-        except boto3.exceptions.ClientError as e:
+        except ClientError as e:
             error_code = e.response.get("Error", {}).get("Code", "Unknown")
             error_message = e.response.get("Error", {}).get("Message", str(e))
             return f"S3 upload failed ({error_code}): {error_message}"

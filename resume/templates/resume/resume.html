@@ -4,9 +4,14 @@
 
 {% block content %}
 {% if resumes %}
-<div class="d-flex h-100">
+<div class="d-flex flex-column flex-lg-row h-100">
     <!-- Sidebar -->
-    <div class="sidebar bg-light border-end" style="width: 300px; height: calc(100vh - 56px); overflow-y: auto;">
+    <div class="sidebar bg-light border-end" id="resumeSidebar">
+        <div class="d-lg-none p-2 border-bottom">
+            <button class="btn btn-link text-dark" onclick="toggleSidebar()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
         <div class="p-3">
             <!-- Add Generate Button -->
             <div class="mb-4">
@@ -24,7 +29,7 @@
                    onclick="showResume(this); return false;">
                     <div class="card shadow-sm hover-shadow">
                         <div class="card-body">
-                            <div class="resume-preview-container mb-2" style="height: 150px;">
+                            <div class="resume-preview-container mb-2">
                                 <div class="resume-preview">
                                     {{ resume.html_template|safe }}
                                 </div>
@@ -39,10 +44,17 @@
         </div>
     </div>
 
+    <!-- Toggle Sidebar Button for Mobile -->
+    <div class="d-lg-none position-fixed bottom-0 start-0 p-3" style="z-index: 1030;">
+        <button class="btn btn-primary rounded-circle shadow" onclick="toggleSidebar()">
+            <i class="bi bi-list"></i>
+        </button>
+    </div>
+
     <!-- Main Content -->
-    <div class="flex-grow-1 p-4 overflow-auto" style="height: calc(100vh - 56px);">
+    <div class="flex-grow-1 p-4 overflow-auto">
         <div class="d-flex justify-content-center">
-            <div id="resume-preview" class="resume-preview-main" style="width: 21cm; min-height: 29.7cm; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+            <div id="resume-preview" class="resume-preview-main">
                 {% if active_resume %}
                     {{ active_resume.html_template|safe }}
                 {% else %}
@@ -56,39 +68,73 @@
 </div>
 
 <style>
+.sidebar {
+    width: 300px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        position: fixed;
+        left: -300px;
+        top: 0;
+        bottom: 0;
+        z-index: 1040;
+        width: 300px;
+        height: 100vh;
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+}
+
 .resume-preview-container {
+    height: 150px;
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(0,0,0,0.1);
     border-radius: 4px;
 }
 
-.resume-preview {
-    transform: scale(0.2);
-    transform-origin: top left;
-    width: 500%;
-    height: 500%;
-    position: absolute;
+.resume-preview-main {
+    width: 100%;
+    max-width: 21cm;
+    min-height: 29.7cm;
     background: white;
-    pointer-events: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    padding: 2rem;
+    transform-origin: top center;
 }
 
-.sidebar {
-    transition: all 0.3s ease;
+@media (max-width: 991.98px) {
+    .resume-preview-main {
+        padding: 1rem;
+        transform: scale(0.8);
+        margin: -10% auto;
+    }
 }
 
-.resume-item a.active .card {
-    border-color: var(--bs-primary);
-    background-color: var(--bs-primary-bg-subtle);
+@media (max-width: 767.98px) {
+    .resume-preview-main {
+        transform: scale(0.6);
+        margin: -20% auto;
+    }
 }
 
-.hover-shadow {
-    transition: all 0.3s ease;
-}
-
-.hover-shadow:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+@media (max-width: 575.98px) {
+    .resume-preview-main {
+        transform: scale(0.5);
+        margin: -25% auto;
+    }
+    
+    .sidebar {
+        width: 100%;
+        max-width: 300px;
+    }
 }
 
 /* Add styles for the generate button */
@@ -133,9 +179,66 @@
     transform: scale(1.01);
     box-shadow: 0 0 20px rgba(0,0,0,0.15) !important;
 }
+
+/* Add zoom controls */
+.zoom-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.zoom-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.zoom-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
 </style>
 
+<!-- Add zoom controls -->
+<div class="zoom-controls d-none d-md-flex">
+    <button class="zoom-btn" onclick="zoomResume('in')">
+        <i class="bi bi-zoom-in"></i>
+    </button>
+    <button class="zoom-btn" onclick="zoomResume('out')">
+        <i class="bi bi-zoom-out"></i>
+    </button>
+</div>
+
 <script>
+function toggleSidebar() {
+    const sidebar = document.getElementById('resumeSidebar');
+    sidebar.classList.toggle('show');
+}
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener('click', function(event) {
+    const sidebar = document.getElementById('resumeSidebar');
+    const toggleBtn = document.querySelector('[onclick="toggleSidebar()"]');
+    
+    if (window.innerWidth < 992 && // Only on mobile
+        !sidebar.contains(event.target) && // Click outside sidebar
+        !toggleBtn.contains(event.target) && // Not clicking toggle button
+        sidebar.classList.contains('show')) { // Sidebar is visible
+        sidebar.classList.remove('show');
+    }
+});
+
 function showResume(element) {
     const resumeId = element.getAttribute('data-resume-id');
     updateResumePreview(resumeId);
@@ -165,6 +268,54 @@ document.getElementById('resume-preview').addEventListener('click', function() {
     if (activeResume) {
         const resumeId = activeResume.getAttribute('data-resume-id');
         updateResumePreview(resumeId);
+    }
+});
+
+let currentScale = 1;
+const MIN_SCALE = 0.5;
+const MAX_SCALE = 1.5;
+
+function zoomResume(direction) {
+    const preview = document.getElementById('resume-preview');
+    const scaleChange = direction === 'in' ? 0.1 : -0.1;
+    const newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, currentScale + scaleChange));
+    
+    if (newScale !== currentScale) {
+        currentScale = newScale;
+        preview.style.transform = `scale(${currentScale})`;
+    }
+}
+
+// Add touch gesture support for zooming
+let touchStartDistance = 0;
+const preview = document.getElementById('resume-preview');
+
+preview.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+        touchStartDistance = Math.hypot(
+            e.touches[0].pageX - e.touches[1].pageX,
+            e.touches[0].pageY - e.touches[1].pageY
+        );
+    }
+});
+
+preview.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        const currentDistance = Math.hypot(
+            e.touches[0].pageX - e.touches[1].pageX,
+            e.touches[0].pageY - e.touches[1].pageY
+        );
+        
+        const scale = (currentDistance - touchStartDistance) * 0.01;
+        const newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, currentScale + scale));
+        
+        if (newScale !== currentScale) {
+            currentScale = newScale;
+            preview.style.transform = `scale(${currentScale})`;
+        }
+        
+        touchStartDistance = currentDistance;
     }
 });
 </script>
