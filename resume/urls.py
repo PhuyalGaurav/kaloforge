@@ -10,4 +10,5 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("form", views.form, name="form"),
     path("resume", views.resume, name="resume"),
+    path("api/resume/<int:resume_id>/", views.resume_preview, name="resume_preview"),
 ]

@@ -11,6 +11,8 @@ from .models import User, ResumeData, Resume
 from .utils import generate_data, generate_html_template_1, generate_pdf_from_html
 import json
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 
 def index(request):
@@ -18,8 +20,25 @@ def index(request):
 
 
 @login_required(login_url="/login")
+def resume_preview(request, resume_id):
+    resume = get_object_or_404(Resume, id=resume_id, user=request.user)
+    return JsonResponse({"html_template": resume.html_template})
+
+
+@login_required(login_url="/login")
 def resume(request):
-    return render(request, "resume/resume.html")
+    resumes = (
+        Resume.objects.filter(user=request.user)
+        .select_related("data")
+        .order_by("-created_at")
+    )
+    active_resume = resumes.first() if resumes.exists() else None
+
+    return render(
+        request,
+        "resume/resume.html",
+        {"resumes": resumes, "active_resume": active_resume},
+    )
 
 
 def home(request):

@@ -6,30 +6,20 @@
 {% block content %}
 <style>
     .resume-preview-container {
-        width: 100%;
-        height: 0;
-        padding-bottom: 141.42%; /* A4 aspect ratio */
+        height: 150px;
         position: relative;
         background: white;
         border: 1px solid rgba(0,0,0,0.1);
-        border-radius: 8px;
+        border-radius: 4px;
         overflow: hidden;
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.5rem;
     }
     
     .resume-preview {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-    
-    .resume-preview > * {
-        transform: scale(0.18);
+        transform: scale(0.2);
         transform-origin: top left;
-        width: 555.55%; /* 100/0.18 to compensate for scale */
-        height: 555.55%;
+        width: 500%;
+        height: 500%;
         position: absolute;
         background: white;
         pointer-events: none;
@@ -37,43 +27,143 @@
     
     .card {
         transition: all 0.3s ease;
-        min-height: 500px;
     }
     
     .hover-shadow:hover {
-        transform: translateY(-5px);
+        transform: translateY(-2px);
         box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
     }
 
     .card-body {
-        padding: 1.5rem;
+        padding: 1rem;
+    }
+
+    .resume-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    .resume-preview-container:hover .resume-overlay {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .edit-button {
+        color: white;
+        text-decoration: none;
+        font-size: 0.9rem;
+        padding: 0.5rem 1.5rem;
+        border: 2px solid white;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .edit-button:hover {
+        background: white;
+        color: black;
+        text-decoration: none;
+    }
+
+    .dropdown-menu {
+        min-width: 200px;
+        border: 0;
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+        border-radius: 8px;
+    }
+
+    .dropdown-item {
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .dropdown-item:hover {
+        background-color: var(--bs-primary-bg-subtle);
+    }
+
+    .resume-count-badge {
+        background-color: var(--bs-primary-bg-subtle);
+        color: var(--bs-primary);
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 1rem;
     }
 </style>
 
-<div class="container-fluid py-5">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {% for r in resume %}
-        <div class="col">
-            <div class="card h-100 shadow-sm hover-shadow">
-                <div class="card-body">
-                    <div class="resume-preview-container">
-                        <div class="resume-preview">
-                            {{ r.html_template|safe }}
-                        </div>
-                    </div>
-                    <h5 class="card-title text-truncate mb-3">{{ r.data.name }}</h5>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a href="{{ r.pdf_link }}" class="btn btn-primary" target="_blank">
-                            <i class="bi bi-file-pdf me-2"></i>View PDF
+{% if resume %}
+    <div class="container-fluid py-4">
+        <!-- Dropdown Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="dropdown">
+                <button class="btn btn-link text-dark text-decoration-none dropdown-toggle fs-4 fw-bold p-0" 
+                        type="button" 
+                        id="resumeDropdown" 
+                        data-bs-toggle="dropdown" 
+                        aria-expanded="false">
+                    Your Resumes
+                    <span class="resume-count-badge ms-2">{{ resume|length }}</span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="resumeDropdown">
+                    {% for r in resume %}
+                    <li>
+                        <a class="dropdown-item d-flex justify-content-between align-items-center" 
+                           href="{% url 'form' %}?resume_id={{ r.id }}">
+                            <span class="text-truncate me-3">{{ r.data.name }}</span>
+                            <small class="text-muted">{{ r.created_at|date:"M d" }}</small>
                         </a>
-                        <small class="text-muted">{{ r.created_at|date:"M d, Y" }}</small>
+                    </li>
+                    {% endfor %}
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item text-primary" href="{% url 'form' %}">
+                            <i class="bi bi-plus-circle me-2"></i>Create New Resume
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <a href="{% url 'form' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i>Generate Resume
+            </a>
+        </div>
+
+        <!-- Resume Grid -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {% for r in resume %}
+            <div class="col">
+                <div class="card shadow-sm hover-shadow">
+                    <div class="card-body">
+                        <div class="resume-preview-container">
+                            <div class="resume-preview">
+                                {{ r.html_template|safe }}
+                            </div>
+                            <div class="resume-overlay">
+                                <a href="{% url 'form' %}?resume_id={{ r.id }}" class="edit-button">
+                                    <i class="bi bi-pencil-square me-2"></i>Edit
+                                </a>
+                            </div>
+                        </div>
+                        <h6 class="card-title text-truncate mb-2">{{ r.data.name }}</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">{{ r.created_at|date:"M d, Y" }}</small>
+                            <a href="{{ r.pdf_link }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                <i class="bi bi-file-pdf"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
 {% else %}
     <div class="container d-flex align-items-center justify-content-center">
         <div class="text-center">

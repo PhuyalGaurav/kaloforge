@@ -3,7 +3,174 @@
 {% block title %}Kaloforge: Resume{% endblock %}
 
 {% block content %}
-<div class="container d-flex align-items-center justify-content-center">
+{% if resumes %}
+<div class="d-flex h-100">
+    <!-- Sidebar -->
+    <div class="sidebar bg-light border-end" style="width: 300px; height: calc(100vh - 56px); overflow-y: auto;">
+        <div class="p-3">
+            <!-- Add Generate Button -->
+            <div class="mb-4">
+                <a href="{% url 'form' %}" class="btn btn-primary w-100">
+                    <i class="bi bi-plus-circle me-2"></i>Generate Resume
+                </a>
+            </div>
+            
+            <h5 class="mb-3">Your Resumes</h5>
+            {% for resume in resumes %}
+            <div class="resume-item mb-3">
+                <a href="#" 
+                   class="text-decoration-none {% if resume.id == active_resume.id %}active{% endif %}"
+                   data-resume-id="{{ resume.id }}"
+                   onclick="showResume(this); return false;">
+                    <div class="card shadow-sm hover-shadow">
+                        <div class="card-body">
+                            <div class="resume-preview-container mb-2" style="height: 150px;">
+                                <div class="resume-preview">
+                                    {{ resume.html_template|safe }}
+                                </div>
+                            </div>
+                            <h6 class="card-title text-truncate mb-2">{{ resume.data.name }}</h6>
+                            <small class="text-muted">{{ resume.created_at|date:"M d, Y" }}</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-grow-1 p-4 overflow-auto" style="height: calc(100vh - 56px);">
+        <div class="d-flex justify-content-center">
+            <div id="resume-preview" class="resume-preview-main" style="width: 21cm; min-height: 29.7cm; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                {% if active_resume %}
+                    {{ active_resume.html_template|safe }}
+                {% else %}
+                    <div class="text-center text-muted mt-5">
+                        <p>Select a resume from the sidebar to preview</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.resume-preview-container {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 4px;
+}
+
+.resume-preview {
+    transform: scale(0.2);
+    transform-origin: top left;
+    width: 500%;
+    height: 500%;
+    position: absolute;
+    background: white;
+    pointer-events: none;
+}
+
+.sidebar {
+    transition: all 0.3s ease;
+}
+
+.resume-item a.active .card {
+    border-color: var(--bs-primary);
+    background-color: var(--bs-primary-bg-subtle);
+}
+
+.hover-shadow {
+    transition: all 0.3s ease;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+}
+
+/* Add styles for the generate button */
+.btn-primary {
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.15);
+}
+
+/* Add these new styles */
+#resume-preview {
+    overflow: hidden;
+    padding: 2rem;
+}
+
+.overflow-auto {
+    -webkit-overflow-scrolling: touch;
+}
+
+@media print {
+    .sidebar {
+        display: none;
+    }
+    
+    #resume-preview {
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+/* New styles */
+.resume-preview-main {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resume-preview-main:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 20px rgba(0,0,0,0.15) !important;
+}
+</style>
+
+<script>
+function showResume(element) {
+    const resumeId = element.getAttribute('data-resume-id');
+    updateResumePreview(resumeId);
+}
+
+function updateResumePreview(resumeId) {
+    fetch(`/api/resume/${resumeId}/`)
+        .then(response => response.json())
+        .then(data => {
+            const previewDiv = document.getElementById('resume-preview');
+            previewDiv.innerHTML = data.html_template;
+            
+            // Update active state in sidebar
+            document.querySelectorAll('.resume-item a').forEach(a => {
+                if (a.getAttribute('data-resume-id') === resumeId) {
+                    a.classList.add('active');
+                } else {
+                    a.classList.remove('active');
+                }
+            });
+        });
+}
+
+// Add click handler for main preview
+document.getElementById('resume-preview').addEventListener('click', function() {
+    const activeResume = document.querySelector('.resume-item a.active');
+    if (activeResume) {
+        const resumeId = activeResume.getAttribute('data-resume-id');
+        updateResumePreview(resumeId);
+    }
+});
+</script>
+
+{% else %}
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
     <div class="text-center">
         <img src="{% static 'resume/images/resume.png' %}" 
              alt="No resumes yet" 
@@ -22,4 +189,5 @@
         </div>
     </div>
 </div>
+{% endif %}
 {% endblock %}
