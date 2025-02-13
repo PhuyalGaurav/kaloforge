@@ -81,7 +81,7 @@
                 {% if active_resume %}
                 <div class="btn-group">
                     <a href="{{ active_resume.pdf_link }}" 
-                       class="btn btn-primary" 
+                       class="btn btn-secondary" 
                        download="{{ active_resume.data.name|default:'resume' }}.pdf"
                        onclick="downloadPDF(event, '{{ active_resume.pdf_link }}', '{{ active_resume.data.name|slugify }}')">
                         <i class="bi bi-download me-2"></i>Download PDF
@@ -92,7 +92,7 @@
                         <i class="bi bi-eye me-2"></i>View in Browser
                     </a>
                     <a href="{% url 'form' %}?resume_id={{ active_resume.id }}" 
-                       class="btn btn-outline-secondary bg-light">
+                       class="btn btn-primary bg-light">
                         <i class="bi bi-pencil me-2"></i>Edit
                     </a>
                 </div>
@@ -323,23 +323,10 @@
     color: var(--bs-primary);
     border-color: var(--bs-primary);
 }
-
 .btn-outline-primary:hover {
-    color: #fff;
-    background-color: var(--bs-primary);
+    color: var(--bs-primary);
+    background: transparent!important;
     border-color: var(--bs-primary);
-}
-
-.btn-outline-secondary {
-    color: var(--bs-gray-700);
-    border-color: var (--bs-gray-400);
-    background-color: var(--bs-light);
-}
-
-.btn-outline-secondary:hover {
-    color: var(--bs-gray-900);
-    background-color: var(--bs-gray-200);
-    border-color: var(--bs-gray-500);
 }
 
 .animation-spin {
