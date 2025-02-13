@@ -41,6 +41,8 @@ jobs:
           --build-arg API_KEY=${{ secrets.API_KEY }} \
           --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
           --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+          --build-arg GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
+          --build-arg GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
           -t ${IMAGE}:${{ github.sha }} .
         docker push ${IMAGE}:${{ github.sha }}
 
@@ -53,4 +55,4 @@ jobs:
           --project golden-bonbon-449702-p6 \
           --allow-unauthenticated \
           --port 8080 \
-          --set-env-vars "DATABASE_URL=${{ secrets.DATABASE_URL }},SECRET_KEY=${{ secrets.SECRET_KEY }},DEBUG=${{ secrets.DEBUG }},API_KEY=${{ secrets.API_KEY }},AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }},AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          --set-env-vars "DATABASE_URL=${{ secrets.DATABASE_URL }},SECRET_KEY=${{ secrets.SECRET_KEY }},DEBUG=${{ secrets.DEBUG }},API_KEY=${{ secrets.API_KEY }},AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }},AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }},GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }},GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}"
