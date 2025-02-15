@@ -1,145 +1,212 @@
-{% extends 'resume/layout.html' %}
+{% load static %}
 
-{% block title %}Kaloforge:resume_form{% endblock %}
 
-{% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10 col-sm-12">
-            <div class="form-overlay form-container">
-                <form action="{% url 'form' %}" method="POST" class="form-box p-4">
-                    {% csrf_token %}
-                    <h2>Create Your Resume</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Resume Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'resume/resumebuilder.css' %}">
 
-                    <div class="form-group mb-3">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
-                    </div>
+</head>
 
-                    <div class="form-group mb-3">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="professional_summary">Professional Summary</label>
-                        <textarea id="professional_summary" name="professional_summary" class="form-control" placeholder="Write a short summary about yourself" required></textarea>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="skills">Skills</label>
-                        <textarea id="skills" name="skills" class="form-control" placeholder="Enter your skills, separated by commas" required></textarea>
-                    {% comment %} </div>
-                    <div class="form-group mb-3">
-                        <label for="photo">Upload Photo</label>
-                        <input type="file" id="photo" name="photo" class="form-control" required>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="job_title_1">Job Title 1</label>
-                        <input type="text" id="job_title_1" name="work_history[0][job_title]" class="form-control" placeholder="Enter job title" required>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="company_name_1">Company Name 1</label>
-                        <input type="text" id="company_name_1" name="work_history[0][company_name]" class="form-control" placeholder="Enter company name" required>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="time_employed_1">Time Employed 1</label>
-                        <input type="text" id="time_employed_1" name="work_history[0][time_employed]" class="form-control" placeholder="Enter time period" required>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="responsibilities_1">Responsibilities 1</label>
-                        <textarea id="responsibilities_1" name="work_history[0][responsibilities]" class="form-control" placeholder="Enter responsibilities, separated by commas" required></textarea>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="job_title_2">Job Title 2</label>
-                        <input type="text" id="job_title_2" name="work_history[1][job_title]" class="form-control" placeholder="Enter job title">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="company_name_2">Company Name 2</label>
-                        <input type="text" id="company_name_2" name="work_history[1][company_name]" class="form-control" placeholder="Enter company name">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="time_employed_2">Time Employed 2</label>
-                        <input type="text" id="time_employed_2" name="work_history[1][time_employed]" class="form-control" placeholder="Enter time period">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="responsibilities_2">Responsibilities 2</label>
-                        <textarea id="responsibilities_2" name="work_history[1][responsibilities]" class="form-control" placeholder="Enter responsibilities, separated by commas"></textarea>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="school_name_1">School Name 1</label>
-                        <input type="text" id="school_name_1" name="education[0][school_name]" class="form-control" placeholder="Enter school name" required>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="degree_1">Degree 1</label>
-                        <input type="text" id="degree_1" name="education[0][degree]" class="form-control" placeholder="Enter degree">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="time_period_1">Time Period 1</label>
-                        <input type="text" id="time_period_1" name="education[0][time_period]" class="form-control" placeholder="Enter time period">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="school_name_2">School Name 2</label>
-                        <input type="text" id="school_name_2" name="education[1][school_name]" class="form-control" placeholder="Enter school name">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="degree_2">Degree 2</label>
-                        <input type="text" id="degree_2" name="education[1][degree]" class="form-control" placeholder="Enter degree">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="time_period_2">Time Period 2</label>
-                        <input type="text" id="time_period_2" name="education[1][time_period]" class="form-control" placeholder="Enter time period">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="project_name_1">Project Name 1</label>
-                        <input type="text" id="project_name_1" name="projects[0][project_name]" class="form-control" placeholder="Enter project name" required>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="description_1">Project Description 1</label>
-                        <textarea id="description_1" name="projects[0][description]" class="form-control" placeholder="Enter project description" required></textarea>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="technologies_1">Technologies Used 1</label>
-                        <textarea id="technologies_1" name="projects[0][technologies]" class="form-control" placeholder="Enter technologies used, separated by commas" required></textarea>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="project_name_2">Project Name 2</label>
-                        <input type="text" id="project_name_2" name="projects[1][project_name]" class="form-control" placeholder="Enter project name">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="description_2">Project Description 2</label>
-                        <textarea id="description_2" name="projects[1][description]" class="form-control" placeholder="Enter project description"></textarea>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="technologies_2">Technologies Used 2</label>
-                        <textarea id="technologies_2" name="projects[1][technologies]" class="form-control" placeholder="Enter technologies used, separated by commas"></textarea>
-                    </div> {% endcomment %}
-
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary w-100">Submit</button>
-                    </div>
-                </form>
-            </div>
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <div class="d-flex flex-column p-3">
+            <h4 class="text-center mb-4">
+                <i class="fas fa-file-alt me-2"></i>Resume Sections
+            </h4>
+            <nav class="nav flex-column">
+                <a class="nav-link active" href="#basic-info" onclick="showSection('basic-info')">
+                    <i class="fas fa-user me-2"></i>Basic Information
+                </a>
+                <a class="nav-link" href="#professional-summary" onclick="showSection('professional-summary')">
+                    <i class="fas fa-briefcase me-2"></i>Professional Summary
+                </a>
+                <a class="nav-link" href="#skills" onclick="showSection('skills')">
+                    <i class="fas fa-tools me-2"></i>Skills
+                </a>
+                <a class="nav-link" href="#work-history" onclick="showSection('work-history')">
+                    <i class="fas fa-history me-2"></i>Experience
+                </a>
+                <a class="nav-link" href="#education" onclick="showSection('education')">
+                    <i class="fas fa-graduation-cap me-2"></i>Education
+                </a>
+                <a class="nav-link" href="#projects" onclick="showSection('projects')">
+                    <i class="fas fa-project-diagram me-2"></i>Projects
+                </a>
+                <a class="nav-link" href="#certifications" onclick="showSection('certifications')">
+                    <i class="fas fa-file-alt me-2"></i>Certifications
+                </a>
+                <a class="nav-link" href="#languages" onclick="showSection('languages')">
+                    <i class="fas fa-language me-2"></i>Languages
+                </a>
+                <a class="nav-link" href="#interests" onclick="showSection('interests')">
+                    <i class="fas fa-heart me-2">
+                    </i>Interests
+                </a>
+            </nav>
         </div>
     </div>
-</div>
-{% endblock %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2 class="text-center mb-5">Kaloforge's Resume Builder</h2>
+        <form method="post" id="resumeForm" class="needs-validation" action="{% url 'form' %}"novalidate>
+            {% csrf_token %}
+            <!-- Basic Information -->
+            <section id="basic-info" class="card shadow-sm">
+                <div class="card-header">
+                    <div class="section-header">
+                        <i class="fas fa-user"></i>
+                        <h3 class="card-title mb-0">Basic Information</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" placeholder="Enter your full name" name="name" value="{{ user.username }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Enter your email" name="email" value="{{ user.email }}"required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" placeholder="Enter your phone number" name="phone">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Photo</label>
+                            <input type="file" class="form-control" name="image">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Professional Summary -->
+            <section id="professional-summary" class="card shadow-sm">
+                <div class="card-header">
+                    <div class="section-header">
+                        <i class="fas fa-briefcase"></i>
+                        <h3 class="card-title mb-0">Professional Summary</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <label class="form-label">Summary</label>
+                    <textarea class="form-control" placeholder="Enter your professional summary" rows="4" name="summary"></textarea>
+                </div>
+            </section>
+
+            <!-- Skills -->
+            <section id="skills" class="card shadow-sm">
+                <div class="card-header">
+                    <div class="section-header">
+                        <i class="fas fa-tools"></i>
+                        <h3 class="card-title mb-0">Skills</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <label class="form-label">Skills</label>
+                    <textarea class="form-control" placeholder="Enter your skills" rows="4" name="skills"></textarea>
+                </div>
+            </section>
+
+            <section id="work-history" class="card shadow-sm">
+                <div class="card-header">
+                    <div class="section-header">
+                        <i class="fas fa-history"></i>
+                        <h3 class="card-title mb-0">Experience</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <label class="form-label">Experience</label>
+                    <textarea class="form-control" placeholder="Enter your Experiences" rows="4" name="experience"></textarea>
+                </div>
+            </section>
+
+            <!-- Education -->
+            <section id="education" class="card shadow-sm">
+                <div class="card-header">
+                    <div class="section-header">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3 class="card-title mb-0">Education</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <label class="form-label">Education</label>
+                    <textarea class="form-control" placeholder="Enter your education" rows="4" name="education"></textarea>
+                </div>
+            </section>
+
+            <!-- Projects -->
+            <section id="projects" class="card shadow-sm">
+                <div class="card-header">
+                    <div class="section-header">
+                        <i class="fas fa-project-diagram"></i>
+                        <h3 class="card-title mb-0">Projects</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <label class="form-label">Projects</label>
+                    <textarea class="form-control" placeholder="Enter your projects" rows="4" name="projects"></textarea>
+                </div>
+            </section>
+            
+            <section id="certifications" class="card shadow-sm">
+                <div class="card-header">
+                    <div class="section-header">
+                        <i class="fas fa-file-alt"></i>
+                        <h3 class="card-title mb-0">Certifications</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <label class="form-label">Certifications</label>
+                    <textarea class="form-control" placeholder="Enter your Certifications" rows="4" name="certifications"></textarea>
+                </div>
+            </section>
+
+            <section id="languages" class="card shadow-sm">
+                <div class="card-header">
+                    <div class="section-header">
+                        <i class="fas fa-language"></i>
+                        <h3 class="card-title mb-0">Languages</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <label class="form-label">Languages</label>
+                    <textarea class="form-control" placeholder="Enter your Languages" rows="4" name="languages" ></textarea>
+                </div>
+            </section>
+            
+            
+            <section id="interests" class="card shadow-sm">
+                <div class="card-header">
+                    <div class="section-header">
+                        <i class="fas fa-heart"></i>
+                        <h3 class="card-title mb-0">Interests</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <label class="form-label">Interests</label>
+                    <textarea class="form-control" placeholder="Enter your Interests" rows="4" name="interests" ></textarea>
+                </div>
+            </section>  
+
+            
+            <div class="text-center mt-5">
+                <button type="submit" class="btn btn-primary btn-lg px-5">
+                    <i class="fas fa-file-download me-2"></i>Generate Resume
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'resume/resumebuilder.js' %}"></script>
+</body>
+</html>

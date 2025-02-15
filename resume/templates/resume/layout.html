@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static 'resume/style.css' %}">
     <link rel="shortcut icon" href="{% static 'resume/images/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
 
 </head>
@@ -76,8 +77,8 @@
             </a>
             <div class="mt-3">
                 <div class="text-center">
-                    <p class="text-muted mb-2">Or continue with</p>
-                    <a href="{% provider_login_url 'google' %}" class="btn w-100 google-btn" style="background-color: #f7f7f7; border: 1px solid #dadce0; color: #3c4043; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.72);">
+                    <p class="text-center mb-4">Or continue with</p>
+                    <a href="{% provider_login_url 'google' %}" class="btn btn-outline-primary w-100 google-btn" style="background-color: #f7f7f7; border: 1px solid #dadce0; color: #3c4043; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.72);">
                         <img src="{% static 'resume/images/glogo.png' %}" alt="Google" style="height: 18px; margin-right: 8px; vertical-align: middle;">
                         <span style="vertical-align: middle;">Google</span>
                     </a>
@@ -95,6 +96,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="{% static 'resume/resume.js' %}"></script>
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,184 @@
+/* Resume Builder Styles */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+/* Root Variables */
+:root {
+    --primary-gradient: linear-gradient(45deg, #ff4b2b, #ff416c);
+    --secondary-gradient: linear-gradient(45deg, #007bff, #00d4ff);
+    --dark-bg: #1a1a1a;
+    --dark-overlay: rgba(0, 0, 0, 0.95);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f7f7;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    background: var(--dark-overlay);
+    color: white;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 19%;
+    z-index: 1000;
+    border-right: 1px solid var(--glass-bg);
+    overflow-y: auto;
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 16.66667%;
+    padding: 2rem;
+}
+
+/* Card Styling */
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 2rem;
+    display: none;  /* Hide sections by default */
+}
+
+.card-header {
+    background: var(--dark-bg) !important;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+}
+
+.card-body {
+    background: white;
+    color: #333;
+    padding: 25px;
+}
+
+/* Form Controls */
+.form-label {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.form-control {
+    background: white;
+    border: 1px solid #dee2e6;
+    color: #333;
+    border-radius: 8px;
+    padding: 12px 20px;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: #ff416c;
+    box-shadow: 0 0 0 3px rgba(255, 65, 108, 0.2);
+    background: white;
+    color: #333;
+}
+
+/* Button Styling */
+.btn-light {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.btn-light:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Section Header */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-header i {
+    font-size: 1.2rem;
+    color: white;
+}
+
+#sidebar .nav-link {
+    color: white;
+    padding: 12px 30px;
+    margin: 8px 0;
+    border-radius: 50px !important;
+    transition: 0.2s ease;
+    font-size: 1.1rem;
+}
+
+#sidebar .nav-link:hover, 
+#sidebar .nav-link.active {
+    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    transform: scale(1.02);
+}
+
+/* Button Hover Effect */
+.btn {
+    padding: 12px 30px !important;
+    margin-right: 15px !important;
+    font-size: 1.2rem !important;
+    color: white;
+    text-decoration: none !important;
+    border-radius: 50px !important;
+    transition: 0.2s ease !important;
+}
+
+.btn:hover {
+    transform: scale(1.02) !important;
+    background: linear-gradient(45deg, #0056b3, #008cff) !important;
+}
+
+/* Primary Button */
+.btn-primary {
+    background: linear-gradient(45deg, #007bff, #00d4ff);
+    border: none;
+    color: white;
+    min-width: 200px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #0056b3, #008cff)!important;
+    transform: scale(1.02);
+}
+
+/* Large Button */
+.btn-lg {
+    padding: 15px 40px !important;
+    font-size: 1.25rem !important;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 992px) {
+    #sidebar {
+        width: 25%;
+    }
+    .main-content {
+        margin-left: 25%;
+    }
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        min-height: auto;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+}
