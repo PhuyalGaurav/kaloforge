@@ -17,7 +17,7 @@
     color: white;
 }
 .hero .btng{
-    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    background: linear-gradient(45deg, #ff6b6b, #ff4757);
     display: inline-block;
     margin-top: 20px;
     padding: 12px 30px;
@@ -263,6 +263,7 @@ body {
 .btn-lg:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+
 }
 .pdf-preview-container {
     width: 100%;
