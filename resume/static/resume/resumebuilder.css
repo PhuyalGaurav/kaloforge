@@ -291,3 +291,130 @@
 #previewPlaceholder span {
     font-size: 0.9rem;
 }
+
+/* Add these styles to your CSS */
+.confirmation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.confirmation-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    animation: slideUp 0.3s ease-out;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirmation-buttons .btn {
+    font-size: 0.875rem;
+    padding: 0.375rem 1rem;
+    height: 32px;
+    min-width: 90px;
+}
+
+.confirmation-buttons .btn span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.confirmation-buttons .btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+    background: transparent;
+}
+
+.confirmation-buttons .btn-outline-secondary:hover {
+    color: #fff;
+    background-color: #6c757d;
+}
+
+.confirmation-buttons .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.confirmation-buttons .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.normal-state, .loading-state {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.normal-state {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1060;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.loading-content {
+    text-align: center;
+    color: #212529;
+}
+
+.loading-content i {
+    color: #212529;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to { 
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

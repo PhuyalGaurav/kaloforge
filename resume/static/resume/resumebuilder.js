@@ -238,4 +238,63 @@ document.addEventListener('DOMContentLoaded', function() {
             sidebar.style.top = (56 - scrollTop) + 'px';
         }
     });
+
+    const resumeForm = document.getElementById('resumeForm');
+    resumeForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Create and show the confirmation modal
+        const modal = document.createElement('div');
+        modal.className = 'confirmation-modal';
+        // Update just the buttons part of the modal template
+        modal.innerHTML = `
+            <div class="confirmation-content">
+                <h4 class="mb-3"><i class="fas fa-question-circle me-2"></i>Confirm Submission</h4>
+                <p class="mb-3">Are you sure you want to generate your resume?</p>
+                <div class="confirmation-buttons">
+                    <button class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center justify-content-center" id="cancelSubmit">Cancel</button>
+                    <button class="btn btn-dark btn-sm d-inline-flex align-items-center justify-content-center" id="confirmSubmit">
+                        <span class="normal-state d-inline-flex align-items-center">
+                            <i class="fas fa-check me-2"></i>Generate
+                        </span>
+                        <span class="loading-state d-none d-inline-flex align-items-center">
+                            <i class="fas fa-circle-notch fa-spin me-2"></i>Generating...
+                        </span>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Add event listeners for the buttons
+        document.getElementById('cancelSubmit').onclick = function() {
+            modal.remove();
+        };
+        
+        document.getElementById('confirmSubmit').onclick = function() {
+            const btn = this;
+            const normalState = btn.querySelector('.normal-state');
+            const loadingState = btn.querySelector('.loading-state');
+            
+            // Show loading state
+            normalState.classList.add('d-none');
+            loadingState.classList.remove('d-none');
+            btn.disabled = true;
+            
+            // Add loading overlay
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.className = 'loading-overlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-content">
+                    <i class="fas fa-circle-notch fa-spin fa-2x mb-3"></i>
+                    <p>Generating Your Resume 💀</p>
+                </div>
+            `;
+            document.body.appendChild(loadingOverlay);
+            
+            // Submit the form
+            resumeForm.submit();
+        };
+    });
 });
