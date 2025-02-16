@@ -1026,12 +1026,28 @@ color: white;
     width: 250px;
     position: fixed;
     left: 0;
-    top: 56px; /* Height of navbar */
-    height: calc(100vh - 56px);
-    overflow-y: auto;
+    top: 48px;
+    height: calc(100vh - 48px);
     transition: all 0.3s;
-    z-index: 1000;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1020;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+
+#sidebar.collapsed {
+    transform: translateX(-100%);
+}
+
+/* Add overlay for mobile */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1015;
 }
 
 /* Main content adjustment */
@@ -1039,24 +1055,85 @@ color: white;
     margin-left: 250px;
     padding: 2rem;
     width: calc(100% - 250px);
+    transition: margin-left 0.3s ease;
+}
+
+.main-content.expanded {
+    margin-left: 0 !important;
+    width: 100% !important;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     #sidebar {
-        margin-left: -250px;
-        top: 0;
+        transform: translateX(-100%);
+        width: 280px;
     }
 
     #sidebar.active {
-        margin-left: 0;
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay.active {
+        display: block;
     }
 
     .main-content {
         margin-left: 0;
         width: 100%;
+        padding: 1rem;
     }
 }
 
+/* Sticky toggle button styles */
+.sidebar-toggle {
+    position: fixed;
+    left: 250px; /* Same as sidebar width */
+    top: 50%;
+    transform: translateY(-50%);
+    background: #212529;
+    color: white;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 0.5rem;
+    z-index: 1025;
+    transition: all 0.3s ease;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+}
 
+.sidebar-toggle:hover {
+    background: #343a40;
+}
+
+.sidebar-toggle.collapsed {
+    left: 0;
+}
+
+.sidebar-toggle i {
+    transition: transform 0.3s ease;
+}
+
+.sidebar-toggle.collapsed i {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        top: auto;
+        bottom: 2rem;
+        left: 1rem;
+        border-radius: 50%;
+        padding: 0.75rem;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .sidebar-toggle.collapsed {
+        left: 1rem;
+    }
+}
 

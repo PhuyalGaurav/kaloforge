@@ -6,9 +6,17 @@ const navbarHeight = navbar.offsetHeight;
 function updateSidebar(scrollPos) {
     const sidebar = document.getElementById('sidebar');
     
-    // Calculate the difference between navbar height and scroll position
-    const difference = Math.max(0, navbarHeight - scrollPos);
+    // Mobile behavior
+    if (window.innerWidth <= 768) {
+        sidebar.style.position = 'fixed';
+        sidebar.style.top = 'auto';
+        sidebar.style.bottom = '0';
+        sidebar.style.height = '85vh';
+        return;
+    }
     
+    // Desktop behavior remains the same
+    const difference = Math.max(0, navbarHeight - scrollPos);
     sidebar.style.position = 'fixed';
     sidebar.style.top = `${difference}px`;
     sidebar.style.height = `calc(100vh - ${difference}px)`;
@@ -42,9 +50,30 @@ window.addEventListener('resize', function() {
     }, 66); // Debounce resize events
 });
 
+// Add toggle functionality
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('active');
+    if (window.innerWidth <= 768) {
+        if (sidebar.style.transform === 'translateY(0px)') {
+            sidebar.style.transform = 'translateY(100%)';
+            toggleBtn.classList.remove('active');
+            overlay.classList.remove('active');
+        } else {
+            sidebar.style.transform = 'translateY(0)';
+            toggleBtn.classList.add('active');
+            overlay.classList.add('active');
+        }
+    } else {
+        if (sidebar.style.transform === 'translateX(0px)') {
+            sidebar.style.transform = 'translateX(-100%)';
+            toggleBtn.classList.remove('active');
+            overlay.classList.remove('active');
+        } else {
+            sidebar.style.transform = 'translateX(0)';
+            toggleBtn.classList.add('active');
+            overlay.classList.add('active');
+        }
+    }
 }
 
 function showSection(sectionId) {
@@ -85,7 +114,28 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Update the previewImage function in your JavaScript file
+// Close sidebar when clicking overlay
+document.addEventListener('DOMContentLoaded', function() {
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', function() {
+        toggleSidebar();
+    });
+
+    // Close sidebar when clicking nav links on mobile
+    const navLinks = document.querySelectorAll('#sidebar .nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        });
+    });
+});
+
+// Update the previewImage function
 function previewImage(input) {
     const preview = document.getElementById('imagePreview');
     const placeholder = document.getElementById('previewPlaceholder');
@@ -109,3 +159,83 @@ function previewImage(input) {
         container.style.borderStyle = 'dashed';
     }
 }
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.createElement('button');
+    
+    // Initialize toggle button
+    toggleBtn.className = 'sidebar-toggle';
+    toggleBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+    document.body.appendChild(toggleBtn);
+
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+
+    // Toggle function
+    function toggleSidebar() {
+        if (window.innerWidth <= 768) {
+            if (sidebar.style.transform === 'translateY(0px)') {
+                sidebar.style.transform = 'translateY(100%)';
+                toggleBtn.classList.remove('active');
+                overlay.classList.remove('active');
+            } else {
+                sidebar.style.transform = 'translateY(0)';
+                toggleBtn.classList.add('active');
+                overlay.classList.add('active');
+            }
+        } else {
+            if (sidebar.style.transform === 'translateX(0px)') {
+                sidebar.style.transform = 'translateX(-100%)';
+                toggleBtn.classList.remove('active');
+                overlay.classList.remove('active');
+            } else {
+                sidebar.style.transform = 'translateX(0)';
+                toggleBtn.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+    }
+
+    // Initial state setup for mobile
+    function setupMobileState() {
+        if (window.innerWidth <= 768) {
+            sidebar.style.transform = 'translateX(-100%)';
+            toggleBtn.classList.remove('active');
+            overlay.classList.remove('active');
+        } else {
+            sidebar.style.transform = 'translateX(0)';
+            toggleBtn.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+    }
+
+    // Event listeners
+    toggleBtn.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', toggleSidebar);
+
+    // Close sidebar when clicking nav links on mobile
+    const navLinks = document.querySelectorAll('#sidebar .nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        });
+    });
+
+    // Run setup immediately
+    setupMobileState();
+
+    // Run setup on resize
+    window.addEventListener('resize', setupMobileState);
+
+    // Update sidebar position on scroll
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.scrollY;
+        if (scrollTop <= 56) {
+            sidebar.style.top = (56 - scrollTop) + 'px';
+        }
+    });
+});

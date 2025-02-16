@@ -11,14 +11,16 @@
     left: 0;
     height: calc(100vh - 56px);
     overflow-y: auto;
-    transition: top 0.2s ease, height 0.2s ease;
+    transition: top 0.2s ease, height 0.2s ease, transform 0.3s ease-in-out;
     padding: 1rem;
     background: rgba(33, 37, 41, 0.95);
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     will-change: transform, top, height;
-    transform: translateZ(0);
+    transform: translateZ(0) translateX(0);
     -webkit-font-smoothing: antialiased;
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
 }
 
 .main-content {
@@ -75,40 +77,124 @@
     color: #495057;
 }
 
+/* Add default toggle button styles (hidden on desktop) */
+.sidebar-toggle {
+    display: none;
+}
+
+/* Update the mobile media query */
 @media (max-width: 768px) {
     #sidebar {
-        left: -250px;
+        left: 0;
         z-index: 1030;
+        transform: translateX(-100%); /* Start hidden */
+        border-radius: 0 24px 24px 0;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
     }
 
     #sidebar.active {
-        left: 0;
+        transform: translateX(0); /* Show when active */
     }
 
     .main-content {
         margin-left: 0;
         padding: 1rem;
     }
+
+    /* Show and update toggle button styles */
+    .sidebar-toggle {
+        display: flex;
+        position: fixed;
+        top: 50%;
+        left: 0; /* Start at left edge */
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background: #212529;
+        color: white;
+        border: none;
+        border-radius: 0 8px 8px 0;
+        align-items: center;
+        justify-content: center;
+        z-index: 1025;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-toggle.active {
+        left: 250px; /* Move with sidebar when active */
+    }
+
+    .sidebar-toggle i {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar-toggle.active i {
+        transform: rotate(180deg);
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1015;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    /* Remove from navbar */
+    .navbar .sidebar-toggle {
+        display: none !important;
+    }
 }
 
-.resume-builder {
-    display: flex;
-    margin: -3rem -1rem 0;
-    min-height: calc(100vh - 56px);
-    position: relative;
-}
+@media (max-width: 768px) {
+    #sidebar {
+        border-radius: 24px 24px 0 0;
+        bottom: 0;
+        top: auto !important;
+        height: 85vh !important;
+        transform: translateY(100%);
+        box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.1);
+    }
 
-.nav-link {
-    color: rgba(255, 255, 255, 0.8);
-    transition: all 0.3s;
-    border-radius: 0.5rem;
-    margin: 0.2rem 0;
-}
+    #sidebar.active {
+        transform: translateY(0);
+    }
 
-.nav-link:hover, .nav-link.active {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(5px);
+    /* Update the nav styles to remove extra spacing */
+    .nav.flex-column {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    /* Fix the generate resume button positioning */
+    #sidebar .mt-auto {
+        margin-top: 1rem !important;
+        padding-top: 1rem !important;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Update toggle button position */
+    .sidebar-toggle {
+        bottom: 1.5rem;
+        top: auto;
+        transform: none;
+        border-radius: 8px;
+        left: 1rem;
+        width: 45px;
+        height: 45px;
+    }
 }
 
 /* Adjust scrollbar for sidebar */
