@@ -14,28 +14,29 @@
     <link rel="shortcut icon" href="{% static 'resume/images/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
+    {% block header %}{% endblock header %}
 
 </head>
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">Kaloforge</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand py-1" href="{% url 'home' %}">Kaloforge</a>
+            <button class="navbar-toggler py-1 px-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="btn nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}" style="color: white;">Home</a>
+                        <a class="btn nav-link py-1 px-3 {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}" style="color: white;">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn nav-link {% if request.path == '/resume/' %}active{% endif %}" href="{% url 'resume' %}" style="color: white;">Resume</a>
+                        <a class="btn nav-link py-1 px-3 {% if request.path == '/resume/' %}active{% endif %}" href="{% url 'resume' %}" style="color: white;">Resume</a>
                     </li>
                     <li class="nav-item">
                         <li class="nav-item">
-                            <span class="btn nav-link text-muted" style="cursor: default; pointer-events: none;">
+                            <span class="btn nav-link text-muted py-1 px-3" style="cursor: default; pointer-events: none;">
                                 Coming soon!
                             </span>
                         </li>
@@ -45,11 +46,11 @@
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
-                            <a class="btn nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="btn nav-link dropdown-toggle py-1 px-3" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ user.username }}
                             </a>
-                            <ul class="btn dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="np dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                            <ul class="btn dropdown-menu dropdown-menu-end py-1" aria-labelledby="userDropdown">
+                                <li><a class="np dropdown-item py-1 px-3" href="{% url 'logout' %}">Logout</a></li>
                             </ul>
                         </li>
                     {% endif %}
@@ -58,7 +59,7 @@
         </div>
     </nav>
 
-    <div class="container my-5" id="main-content">
+    <div class="container my-2" id="main-content">
         {% block content %}{% endblock %}
     </div>
 

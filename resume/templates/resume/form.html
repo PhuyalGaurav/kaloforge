@@ -1,33 +1,26 @@
+{% extends 'resume/layout.html' %}
 {% load static %}
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Resume Builder</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'resume/resumebuilder.css' %}">
-    
-    <link rel="shortcut icon" href="{% static 'resume/images/favicon.ico' %}" type="image/x-icon">
-
-</head>
-
-<body>
+{% block title %}Resume Builder{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{% static "resume/resumebuilder.css" %}">
+{% endblock %}
+{% block content %}
+<div class="resume-builder">
     <!-- Sidebar -->
-    <div id="sidebar">
-        <div class="d-flex flex-column p-3">
-            <h4 class="text-center mb-4">
-                <i class="fas fa-file-alt me-2"></i>Resume Sections
-            </h4>
-            <nav class="nav flex-column">
+    <div id="sidebar" class="bg-dark text-white">
+        <div class="d-flex flex-column h-100">
+            <div class="mb-3">
+                <h4 class="mb-0">
+                    <i class="fas fa-file-alt me-2"></i>Sections
+                </h4>
+            </div>
+            <nav class="nav flex-column flex-grow-1">
                 <a class="nav-link active" href="#basic-info" onclick="showSection('basic-info')">
                     <i class="fas fa-user me-2"></i>Basic Information
                 </a>
                 <a class="nav-link" href="#professional-summary" onclick="showSection('professional-summary')">
-                    <i class="fas fa-briefcase me-2"></i>Professional Summary
+                    <i class="fas fa-briefcase me-2"></i>Summary
                 </a>
                 <a class="nav-link" href="#skills" onclick="showSection('skills')">
                     <i class="fas fa-tools me-2"></i>Skills
@@ -48,167 +41,184 @@
                     <i class="fas fa-language me-2"></i>Languages
                 </a>
                 <a class="nav-link" href="#interests" onclick="showSection('interests')">
-                    <i class="fas fa-heart me-2">
-                    </i>Interests
+                    <i class="fas fa-heart me-2"></i>Interests
                 </a>
             </nav>
+            <div class="mt-auto pt-3 border-top border-secondary">
+                <button type="submit" form="resumeForm" class="btn btn-outline-light w-100">
+                    <i class="fas fa-file-download me-2"></i>Generate Resume
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <h2 class="text-center mb-5">Kaloforge's Resume Builder</h2>
-        <form method="post" id="resumeForm" class="needs-validation" action="{% url 'form' %}"novalidate>
+        <div class="d-none d-lg-block p-3">
+            <h1 class="display-6 mb-0">Build Your Resume !</h1>
+        </div>
+        <form method="post" id="resumeForm" class="needs-validation" action="{% url 'form' %}" novalidate>
             {% csrf_token %}
-            <!-- Basic Information -->
-            <section id="basic-info" class="card shadow-sm">
-                <div class="card-header">
-                    <div class="section-header">
-                        <i class="fas fa-user"></i>
-                        <h3 class="card-title mb-0">Basic Information</h3>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" placeholder="Enter your full name" name="name" value="{{ user.username }}" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" placeholder="Enter your email" name="email" value="{{ user.email }}"required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Phone</label>
-                            <input type="tel" class="form-control" placeholder="Enter your phone number" name="phone">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Photo</label>
-                            <input type="file" class="form-control" name="image">
+            
+            <!-- Form sections -->
+            <div class="sections-container">
+                <!-- Basic Information -->
+                <section id="basic-info" class="form-section card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <div class="section-header d-flex align-items-center">
+                            <i class="fas fa-user me-2"></i>
+                            <h3 class="card-title mb-0">Basic Information</h3>
                         </div>
                     </div>
-                </div>
-            </section>
+                    <div class="card-body">
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" placeholder="Enter your full name" name="name" value="{{ user.username }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" placeholder="Enter your email" name="email" value="{{ user.email }}" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-control" placeholder="Enter your phone number" name="phone">
+                            </div>
+                            <div class="col-md-6 mx-auto">
+                                <div class="image-preview-container" onclick="document.getElementById('imageInput').click()">
+                                    <input type="file" class="d-none" name="image" id="imageInput" accept="image/*" onchange="previewImage(this)">
+                                    <img id="imagePreview" src="#" alt="Preview" class="img-fluid d-none">
+                                    <div id="previewPlaceholder" class="text-center">
+                                        <i class="fas fa-user-circle mb-2"></i>
+                                        <p class="mb-0">Click to upload photo</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-            <!-- Professional Summary -->
-            <section id="professional-summary" class="card shadow-sm">
-                <div class="card-header">
-                    <div class="section-header">
-                        <i class="fas fa-briefcase"></i>
-                        <h3 class="card-title mb-0">Professional Summary</h3>
+                <!-- Professional Summary -->
+                <section id="professional-summary" class="form-section card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <div class="section-header">
+                            <i class="fas fa-briefcase"></i>
+                            <h3 class="card-title mb-0">Professional Summary</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <label class="form-label">Summary</label>
-                    <textarea class="form-control" placeholder="Enter your professional summary" rows="4" name="summary"></textarea>
-                </div>
-            </section>
+                    <div class="card-body">
+                        <label class="form-label">Summary</label>
+                        <textarea class="form-control" placeholder="Enter your professional summary" rows="4" name="summary"></textarea>
+                    </div>
+                </section>
 
-            <!-- Skills -->
-            <section id="skills" class="card shadow-sm">
-                <div class="card-header">
-                    <div class="section-header">
-                        <i class="fas fa-tools"></i>
-                        <h3 class="card-title mb-0">Skills</h3>
+                <!-- Skills -->
+                <section id="skills" class="form-section card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <div class="section-header">
+                            <i class="fas fa-tools"></i>
+                            <h3 class="card-title mb-0">Skills</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <label class="form-label">Skills</label>
-                    <textarea class="form-control" placeholder="Enter your skills" rows="4" name="skills"></textarea>
-                </div>
-            </section>
+                    <div class="card-body">
+                        <label class="form-label">Skills</label>
+                        <textarea class="form-control" placeholder="Enter your skills" rows="4" name="skills"></textarea>
+                    </div>
+                </section>
 
-            <section id="work-history" class="card shadow-sm">
-                <div class="card-header">
-                    <div class="section-header">
-                        <i class="fas fa-history"></i>
-                        <h3 class="card-title mb-0">Experience</h3>
+                <section id="work-history" class="form-section card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <div class="section-header">
+                            <i class="fas fa-history"></i>
+                            <h3 class="card-title mb-0">Experience</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <label class="form-label">Experience</label>
-                    <textarea class="form-control" placeholder="Enter your Experiences" rows="4" name="experience"></textarea>
-                </div>
-            </section>
+                    <div class="card-body">
+                        <label class="form-label">Experience</label>
+                        <textarea class="form-control" placeholder="Enter your Experiences" rows="4" name="experience"></textarea>
+                    </div>
+                </section>
 
-            <!-- Education -->
-            <section id="education" class="card shadow-sm">
-                <div class="card-header">
-                    <div class="section-header">
-                        <i class="fas fa-graduation-cap"></i>
-                        <h3 class="card-title mb-0">Education</h3>
+                <!-- Education -->
+                <section id="education" class="form-section card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <div class="section-header">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h3 class="card-title mb-0">Education</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <label class="form-label">Education</label>
-                    <textarea class="form-control" placeholder="Enter your education" rows="4" name="education"></textarea>
-                </div>
-            </section>
+                    <div class="card-body">
+                        <label class="form-label">Education</label>
+                        <textarea class="form-control" placeholder="Enter your education" rows="4" name="education"></textarea>
+                    </div>
+                </section>
 
-            <!-- Projects -->
-            <section id="projects" class="card shadow-sm">
-                <div class="card-header">
-                    <div class="section-header">
-                        <i class="fas fa-project-diagram"></i>
-                        <h3 class="card-title mb-0">Projects</h3>
+                <!-- Projects -->
+                <section id="projects" class="form-section card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <div class="section-header">
+                            <i class="fas fa-project-diagram"></i>
+                            <h3 class="card-title mb-0">Projects</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <label class="form-label">Projects</label>
-                    <textarea class="form-control" placeholder="Enter your projects" rows="4" name="projects"></textarea>
-                </div>
-            </section>
-            
-            <section id="certifications" class="card shadow-sm">
-                <div class="card-header">
-                    <div class="section-header">
-                        <i class="fas fa-file-alt"></i>
-                        <h3 class="card-title mb-0">Certifications</h3>
+                    <div class="card-body">
+                        <label class="form-label">Projects</label>
+                        <textarea class="form-control" placeholder="Enter your projects" rows="4" name="projects"></textarea>
                     </div>
-                </div>
-                <div class="card-body">
-                    <label class="form-label">Certifications</label>
-                    <textarea class="form-control" placeholder="Enter your Certifications" rows="4" name="certifications"></textarea>
-                </div>
-            </section>
+                </section>
+                
+                <section id="certifications" class="form-section card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <div class="section-header">
+                            <i class="fas fa-file-alt"></i>
+                            <h3 class="card-title mb-0">Certifications</h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <label class="form-label">Certifications</label>
+                        <textarea class="form-control" placeholder="Enter your Certifications" rows="4" name="certifications"></textarea>
+                    </div>
+                </section>
 
-            <section id="languages" class="card shadow-sm">
-                <div class="card-header">
-                    <div class="section-header">
-                        <i class="fas fa-language"></i>
-                        <h3 class="card-title mb-0">Languages</h3>
+                <section id="languages" class="form-section card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <div class="section-header">
+                            <i class="fas fa-language"></i>
+                            <h3 class="card-title mb-0">Languages</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <label class="form-label">Languages</label>
-                    <textarea class="form-control" placeholder="Enter your Languages" rows="4" name="languages" ></textarea>
-                </div>
-            </section>
-            
-            
-            <section id="interests" class="card shadow-sm">
-                <div class="card-header">
-                    <div class="section-header">
-                        <i class="fas fa-heart"></i>
-                        <h3 class="card-title mb-0">Interests</h3>
+                    <div class="card-body">
+                        <label class="form-label">Languages</label>
+                        <textarea class="form-control" placeholder="Enter your Languages" rows="4" name="languages" ></textarea>
                     </div>
-                </div>
-                <div class="card-body">
-                    <label class="form-label">Interests</label>
-                    <textarea class="form-control" placeholder="Enter your Interests" rows="4" name="interests" ></textarea>
-                </div>
-            </section>  
-
-            
-            <div class="text-center mt-5">
-                <button type="submit" class="btn btn-primary btn-lg px-5">
-                    <i class="fas fa-file-download me-2"></i>Generate Resume
-                </button>
+                </section>
+                
+                <section id="interests" class="form-section card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <div class="section-header">
+                            <i class="fas fa-heart"></i>
+                            <h3 class="card-title mb-0">Interests</h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <label class="form-label">Interests</label>
+                        <textarea class="form-control" placeholder="Enter your Interests" rows="4" name="interests" ></textarea>
+                    </div>
+                </section>  
             </div>
         </form>
+        <div class="text-center mt-4 mb-5">
+            <button type="submit" form="resumeForm" class="btn btn-dark btn-lg px-4">
+                <i class="fas fa-file-download me-2"></i>Generate Resume
+            </button>
+        </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'resume/resumebuilder.js' %}"></script>
-</body>
-</html>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static "resume/resumebuilder.js" %}"></script>
+</script>
+{% endblock %}

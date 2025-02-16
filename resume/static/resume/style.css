@@ -177,11 +177,7 @@ body {
 }
 .navbar {
     transition: all 0.2s ease;  
-    padding: 0px 0;  
-}
-
-.navbar:hover {
-    padding: 5px 0;  
+    padding: 0.35rem 0;  /* Reduced padding */
 }
 .form-container .form-overlay{
     position: absolute;
@@ -998,6 +994,68 @@ color: white;
 .resume-btn-link-dropdown-toggle:focus {
     background-color: var(--bs-gray-100);
     text-decoration: none;
+}
+
+/* Navbar styles */
+.navbar {
+    padding: 0.5rem 0;
+}
+
+.navbar .nav-link {
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.navbar .dropdown-toggle {
+    border-radius: 0.5rem;
+}
+
+.navbar .dropdown-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Sidebar styles */
+#sidebar {
+    width: 250px;
+    position: fixed;
+    left: 0;
+    top: 56px; /* Height of navbar */
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    transition: all 0.3s;
+    z-index: 1000;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Main content adjustment */
+.main-content {
+    margin-left: 250px;
+    padding: 2rem;
+    width: calc(100% - 250px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -250px;
+        top: 0;
+    }
+
+    #sidebar.active {
+        margin-left: 0;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
 }
 
 
