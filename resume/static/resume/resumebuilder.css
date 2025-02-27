@@ -35,11 +35,15 @@
 .nav-link {
     color: rgba(255, 255, 255, 0.8);
     transition: all 0.3s;
+    border-radius: 50px; 
+    padding: 5px 10px; 
 }
 
 .nav-link:hover, .nav-link.active {
     color: white;
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    transform: scale(1.02);
+    border-radius: 50px; 
 }
 
 .form-section {
@@ -222,13 +226,14 @@
 }
 
 .btn-dark {
-    background: rgba(33, 37, 41, 0.95);
+    background: linear-gradient(45deg, #007bff, #00d4ff);
     border: none;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-dark:hover {
-    background: rgba(33, 37, 41, 1);
+    background: linear-gradient(45deg, #0056b3, #008cff)!important;
+
     transform: translateY(-1px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }

@@ -193,7 +193,8 @@ def form(request):
                 interests=request.POST.get("interests", ""),
             )
             if "image" in request.FILES:
-                resume_data.image = request.FILES["image"]
+                resume_data.image=request.FILES["image"]
+                
             resume_data.save()
 
             data = generate_data(
@@ -207,7 +208,8 @@ def form(request):
                    Projects: {resume_data.projects},
                    Certifications: {resume_data.certifications},
                    Languages: {resume_data.languages},
-                   Interests: {resume_data.interests}"""
+                   Interests: {resume_data.interests},
+                """
             )
 
             html = generate_html_template_1(data)

@@ -182,7 +182,7 @@
     <div class="container">
       <div class="leftPanel">
         {% if item.image %}
-        <img src="avatar.png" alt="Profile Picture">
+        <img src="{{ item.image }}" alt="Profile Picture">
         {% endif %}
         {% if item.contact %}
         <div class="details">
@@ -191,6 +191,7 @@
             <div class="smallText">
               <p><i class="fa fa-envelope contactIcon"></i> 
                 <a href="mailto:{{ item.contact.email|default('') }}">{{ item.contact.email|default('') }}</a>
+                <a href="tel:{{ item.contact.phone|default('') }}">{{ item.contact.phone|default('') }}</a>
               </p>
               {% endif %}
             </div>

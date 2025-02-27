@@ -860,6 +860,12 @@ color: white;
 }
 
 @media (max-width: 992px) {
+    /* Mobile Sidebar */
+    .resume-sidebar {
+        display: none;
+    }
+
+    /* Main Content */
     .resume-pdf-container {
         width: 100%;
         height: calc(100vh - 250px);
@@ -878,7 +884,8 @@ color: white;
         left: 0;
     }
 
-    .resume-mobile-actions {
+    /* Resume Mobile Header */
+    .resume-mobile-header {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
         box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
@@ -896,21 +903,45 @@ color: white;
         height: 100vh;
         overflow: hidden;
     }
-}
 
-@keyframes resumeSlideDown {
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
+    /* Action Buttons (Mobile) */
+    .resume-btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
 
-/* Mobile fixes */
-@media (max-width: 992px) {
+    /* Make resume list full width on mobile */
+    .resume-item a {
+        width: 100%;
+        padding: 15px;
+        font-size: 1rem;
+    }
+
+    .resume-item a.active {
+        background-color: var(--bs-primary-bg-subtle);
+        border-left: 3px solid var(--bs-primary);
+        color: var(--bs-primary);
+    }
+
+    /* Mobile Action Buttons */
+    .resume-mobile-actions {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        z-index: 1000;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .resume-mobile-actions .btn {
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .resume-mobile-header {
         background: white;
         border-bottom: 1px solid rgba(0,0,0,0.1);
@@ -942,18 +973,16 @@ color: white;
     }
 }
 
-.display-6 {
-    font-size: 3rem;
-    color: var(--bs-gray-900);
+/* Make the action buttons for mobile larger */
+.resume-btn-group a {
+    font-size: 1rem;
+    padding: 12px 15px;
+    width: 100%;
+    text-align: center;
+    border-radius: 0.5rem;
 }
 
-@media (min-width: 992px) {
-    .display-6 {
-        padding-left: 300px;
-    }
-}
-
-/* Dropdown Menu */
+/* Adjust Mobile Drop-down Menu */
 .resume-dropdown-menu {
     min-width: 100%;
     border: 0;
@@ -977,25 +1006,6 @@ color: white;
     padding: 0.25rem 0.5rem;
     border-radius: 1rem;
 }
-
-.resume-btn-link-dropdown-toggle {
-    text-align: left;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid var(--bs-gray-200);
-    padding: 0.75rem 1rem !important;
-    border-radius: 8px;
-    background-color: var(--bs-light);
-}
-
-.resume-btn-link-dropdown-toggle:hover,
-.resume-btn-link-dropdown-toggle:focus {
-    background-color: var(--bs-gray-100);
-    text-decoration: none;
-}
-
 /* Navbar styles */
 .navbar {
     padding: 0.5rem 0;
