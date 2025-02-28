@@ -298,3 +298,17 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     });
 });
+
+function selectTemplate(templateId) {
+    // Remove selected class from all options
+    document.querySelectorAll('.template-option').forEach(option => {
+        option.classList.remove('selected');
+    });
+    
+    // Add selected class to clicked option
+    const selectedOption = document.querySelector(`[onclick="selectTemplate('${templateId}')"]`);
+    selectedOption.classList.add('selected');
+    
+    // Check the radio button
+    document.querySelector(`#${templateId}Template`).checked = true;
+}

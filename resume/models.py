@@ -8,19 +8,20 @@ class User(AbstractUser):
 
 
 class ResumeData(models.Model):
-    image = models.ImageField(upload_to="images/", blank=True, null=True)
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    summary = models.TextField()
-    skills = models.TextField()
-    education = models.TextField()
-    experience = models.TextField()
-    projects = models.TextField()
-    certifications = models.TextField()
-    languages = models.TextField()
-    interests = models.TextField()
+    image = models.URLField(max_length=2000)  # Increased from 1000
+    name = models.CharField(max_length=1001)
+    email = models.EmailField(max_length=2001)
+    phone = models.CharField(max_length=2002)
+    summary = models.TextField(max_length=2003)
+    skills = models.TextField(max_length=2004)
+    education = models.TextField(max_length=2005)
+    experience = models.TextField(max_length=2006)
+    projects = models.TextField(max_length=2007)
+    certifications = models.TextField(max_length=2008)
+    languages = models.TextField(max_length=2009)
+    interests = models.TextField(max_length=2010)
     created_at = models.DateTimeField(auto_now_add=True)
+    template = models.CharField(max_length=2000)  # Increased from 1003
 
     def __str__(self):
         return f"{self.name} - {self.created_at}"
@@ -29,9 +30,9 @@ class ResumeData(models.Model):
 class Resume(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     data = models.OneToOneField(ResumeData, on_delete=models.CASCADE)
-    template_used = models.CharField(max_length=100)
+    template_used = models.CharField(max_length=2000)  # Increased from 200
     html_template = models.TextField()
-    pdf_link = models.URLField(max_length=400)
+    pdf_link = models.URLField(max_length=2000)  # Increased from 400
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property

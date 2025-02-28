@@ -8,7 +8,13 @@ from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from .models import User, ResumeData, Resume
-from .utils import generate_data, generate_html_template_1, generate_pdf_from_html
+from .utils import (
+    generate_data,
+    generate_html_template_1,
+    generate_pdf_from_html,
+    upload_image_to_s3,
+    formats,
+)
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -191,31 +197,50 @@ def form(request):
                 certifications=request.POST.get("certifications", ""),
                 languages=request.POST.get("languages", ""),
                 interests=request.POST.get("interests", ""),
+                template=request.POST.get("template", ""),
             )
+            print("Initial")
             if "image" in request.FILES:
-                resume_data.image=request.FILES["image"]
-                
+                image = request.FILES["image"]
+                image_url = upload_image_to_s3(image)
+                print(image_url)
+                if image_url:
+                    resume_data.image = image_url
+                    print(image_url)
+                else:
+                    print("Error uploading image to S3")
+
             resume_data.save()
 
-            data = generate_data(
-                f"""Name: {resume_data.name}, 
-                   Email: {resume_data.email},
-                   Phone: {resume_data.phone},
-                   Summary: {resume_data.summary},
-                   Skills: {resume_data.skills},
-                   Education: {resume_data.education},
-                   Experience: {resume_data.experience},
-                   Projects: {resume_data.projects},
-                   Certifications: {resume_data.certifications},
-                   Languages: {resume_data.languages},
-                   Interests: {resume_data.interests},
-                """
-            )
+            if resume_data.template == "modern":
+                temp_num = 1
+            else:
+                temp_num = 2
 
-            html = generate_html_template_1(data)
+            data = generate_data(
+                f"""
+                    image: {resume_data.image},
+                    Name: {resume_data.name},
+                    Email: {resume_data.email},
+                    Phone: {resume_data.phone},
+                    Summary: {resume_data.summary},
+                    Skills: {resume_data.skills},
+                    Education: {resume_data.education},
+                    Experience: {resume_data.experience},
+                    Projects: {resume_data.projects},
+                    Certifications: {resume_data.certifications},
+                    Languages: {resume_data.languages},
+                    Interests: {resume_data.interests},
+                """,
+                formats[temp_num - 1],
+            )
+            print(data)
+
+            print("HTML")
+            html = generate_html_template_1(data, num=temp_num)
+            print("PDF")
             link = generate_pdf_from_html(html)
 
-            # Create resume and assign to current user
             resume = Resume(
                 user=request.user,  # Ensure the resume is linked to current user
                 data=resume_data,
@@ -227,6 +252,7 @@ def form(request):
 
             return redirect("generated", resume_id=resume.id)
         except Exception as e:
+            print(str(e))
             messages.error(request, f"Error creating resume: {str(e)}")
             return render(request, "resume/form.html")
 

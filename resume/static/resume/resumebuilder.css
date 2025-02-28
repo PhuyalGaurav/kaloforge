@@ -423,3 +423,30 @@
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+.template-selection {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+}
+
+.template-preview {
+    width: 100%;
+    height: 400px; /* Fixed height for all previews */
+    object-fit: contain; /* Maintain aspect ratio */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.template-option {
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.template-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
